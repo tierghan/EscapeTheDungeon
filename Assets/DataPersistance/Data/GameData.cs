@@ -6,11 +6,21 @@ using UnityEngine;
 public class GameData
 
 {
-    public int saveVar1;
+    // add vars here to initialize and save. (public type varName;)
+    public float playerHealth,playerEnergy;
+    public float playerStr,playerDex,playerMagic;
+    public int playerDamageReduction, playerDodgeChance, playerCritChance;
 
-    //defined here are stating values for vars saved.
+    //defined here are stating values for vars saved. (this.varName = defaultValue;)
     public GameData()
     {
-        this.saveVar1 = 0;
+        this.playerHealth = 100f;
+        this.playerEnergy = 10f;
+        this.playerStr = 10f;
+        this.playerDex = 10f;
+        this.playerMagic = 10f;
+        this.playerDamageReduction = 0;
+        this.playerDodgeChance = 0;
+        this.playerCritChance = 0;
     }
 }

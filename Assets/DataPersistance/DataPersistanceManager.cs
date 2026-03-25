@@ -37,7 +37,7 @@ public class DataPersistanceManager : MonoBehaviour
 
     public void LoadGame()
     {
-        // TODO - Load save data from file.
+        // Load save data from file.
         this.gameData = dataHandler.Load();
         // No data = New game.
         if (this.gameData == null)
@@ -45,7 +45,7 @@ public class DataPersistanceManager : MonoBehaviour
             Debug.Log("No data found. Initializing data to defaults.");
             NewGame();
         }
-        // TODO - Push loaded data to other scripts.
+        // Push loaded data to other scripts.
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
         {
             dataPersistanceObj.LoadData(gameData);
@@ -54,12 +54,12 @@ public class DataPersistanceManager : MonoBehaviour
 
     public void SaveGame()
     {
-        // TODO - pass data to other scripts so they can update.
+        // pass data to other scripts so they can update.
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
         {
             dataPersistanceObj.SaveData(ref gameData);
         }
-        // TODO - Save game data to file.
+        // Save game data to file.
         dataHandler.Save(gameData);
     }
 
