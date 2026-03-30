@@ -240,10 +240,9 @@ public class EventCardSystemScript : MonoBehaviour
                 break;
             
             // Event 3: Abandoned Camp - Search the camp for useful supplies.
-            // TODO: Item for Item System. Health Pot should be a consumable that heals for ~20% hp.
             case 3:
                 descriptionText.text = "You look around in the supplies, finding a potion and a coin pouch.\n\n+1 Health Potion\n+30 Gold";
-                player.GetComponent<PlayerDataHandler>().AddStat(5, 5);
+                player.GetComponent<PlayerDataHandler>().AddStat(11, 1);
                 player.GetComponent<PlayerDataHandler>().AddStat(10, 30);
                 hideOptions();
                 break;

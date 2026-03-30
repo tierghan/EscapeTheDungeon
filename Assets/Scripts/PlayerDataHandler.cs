@@ -7,7 +7,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     private float playerHealth,playerEnergy;
     private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy;
 
-    private int playerDamageReduction, playerDodgeChance, playerCritChance, gold;
+    private int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions;
     /*
         0 | Str = Damage Modifier.
         1 | Dex = Dodge + Crit chance
@@ -21,6 +21,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         8 | Dodge Chance = % chance to dodge attacks.
         9 | Crit Chance = % chance to deal 1.5x damage on melee attacks.
         10| Gold = Currency for purchasing items.
+        11| Health Potions = Number of health potions the player has.
     */
     
     // Can be used to add or subtract from any of the player's stats. Used for events and item effects. Try to avoid passing floats into int stats.
@@ -39,12 +40,19 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         stats.Add(playerDodgeChance);
         stats.Add(playerCritChance);
         stats.Add(gold);
+        stats.Add(playerHPPotions);
+
         return stats;
     }
 
     public int GetGold()
     {
         return gold;
+    }
+
+    public int GetHealthPotions()
+    {
+        return playerHPPotions;
     }
 
 
@@ -125,6 +133,9 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
             case 10:
                 gold += (int)amount;
                 break;
+            case 11:
+                playerHPPotions += (int)amount;
+                break;
             default:
                 Debug.Log("Invalid stat index.");
                 break;
@@ -149,6 +160,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         this.playerDodgeChance = data.playerDodgeChance;
         this.playerCritChance = data.playerCritChance;
         this.gold = data.gold;
+        this.playerHPPotions = data.playerHPPotions;
     }
 
     public void SaveData(ref GameData data)
@@ -164,5 +176,6 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         data.playerDodgeChance = this.playerDodgeChance;
         data.playerCritChance = this.playerCritChance;
         data.gold = this.gold;
+        data.playerHPPotions = this.playerHPPotions;
     }
 }
