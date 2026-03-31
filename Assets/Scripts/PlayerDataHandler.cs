@@ -7,7 +7,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     private float playerHealth,playerEnergy;
     private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy;
 
-    private int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions;
+    private int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions, currentAct;
     /*
         0 | Str = Damage Modifier.
         1 | Dex = Dodge + Crit chance
@@ -22,6 +22,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         9 | Crit Chance = % chance to deal 1.5x damage on melee attacks.
         10| Gold = Currency for purchasing items.
         11| Health Potions = Number of health potions the player has.
+        12| Current Act = The act the player is currently in.
     */
     
     // Can be used to add or subtract from any of the player's stats. Used for events and item effects. Try to avoid passing floats into int stats.
@@ -41,6 +42,8 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         stats.Add(playerCritChance);
         stats.Add(gold);
         stats.Add(playerHPPotions);
+        stats.Add(currentAct);
+
 
         return stats;
     }
@@ -136,6 +139,9 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
             case 11:
                 playerHPPotions += (int)amount;
                 break;
+            case 12:
+                currentAct += (int)amount;
+                break;
             default:
                 Debug.Log("Invalid stat index.");
                 break;
@@ -161,6 +167,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         this.playerCritChance = data.playerCritChance;
         this.gold = data.gold;
         this.playerHPPotions = data.playerHPPotions;
+        this.currentAct = data.currentAct;
     }
 
     public void SaveData(ref GameData data)
@@ -177,5 +184,6 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         data.playerCritChance = this.playerCritChance;
         data.gold = this.gold;
         data.playerHPPotions = this.playerHPPotions;
+        data.currentAct = this.currentAct;
     }
 }
