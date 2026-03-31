@@ -27,10 +27,10 @@ public class CombatManagerScript : MonoBehaviour
     {
         UpdatePlayerStats();
         GenerateEnemy((int)playerStats[12]);
-        
+
     }
 
-    void UpdatePlayerStats()
+    public void UpdatePlayerStats()
     {
         playerStats = playerData.GetStats();
     }

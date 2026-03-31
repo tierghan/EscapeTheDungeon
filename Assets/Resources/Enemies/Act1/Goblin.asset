@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eed176d184d02f4ab41f776942508b9, type: 3}
   m_Name: Goblin
   m_EditorClassIdentifier: 
-  enemyName: 
-  enemyMaxHealth: 0
-  enemyStr: 0
+  enemyName: Goblin
+  enemyMaxHealth: 15
+  enemyStr: 1
   enemyDex: 0
   enemyMagic: 0
   enemyDamageReduction: 0
-  enemyDodgeChance: 0
+  enemyDodgeChance: 15
   enemyCritChance: 0
-  goldReward: 0
-  actID: 0
+  goldReward: 5
+  actID: 1
