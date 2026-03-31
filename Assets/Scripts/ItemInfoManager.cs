@@ -158,9 +158,9 @@ public class ItemInfoManager : MonoBehaviour
         }
     }
 
-    public ScriptableObject GetScriptableObject(string itemName)
+    public TestItem GetScriptableObject(string itemName)
     {
-        ScriptableObject itemSO = Resources.Load<ScriptableObject>("Items/" + itemName);
+        TestItem itemSO = Resources.Load<TestItem>("Items/" + itemName);
         return itemSO;
     }
 }

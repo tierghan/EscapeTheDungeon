@@ -13,7 +13,7 @@ public class InventoryManagerScript : MonoBehaviour, IDataPersistance
     GameObject itemInfoManager;
     TMP_Text inventorySlot1Name, inventorySlot1Desc, inventorySlot2Name, inventorySlot2Desc, inventorySlot3Name, inventorySlot3Desc, inventorySlot4Name, inventorySlot4Desc;
 
-    ScriptableObject itemSO;
+    TestItem itemSO;
 
 
 
