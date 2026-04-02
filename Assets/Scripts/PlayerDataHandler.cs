@@ -140,12 +140,24 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 break;
             case 7:
                 playerDamageReduction += (int)amount;
+                if (playerDamageReduction > 100)
+                {
+                    playerDamageReduction = 100;
+                }
                 break;
             case 8:
                 playerDodgeChance += (int)amount;
+                if (playerDodgeChance > 100)
+                {
+                    playerDodgeChance = 100;
+                }
                 break;
             case 9:
                 playerCritChance += (int)amount;
+                if (playerCritChance > 50)
+                {
+                    playerCritChance = 50;
+                }
                 break;
             case 10:
                 gold += (int)amount;
