@@ -8,7 +8,7 @@ public class GameData
 {
     // add vars here to initialize and save. (public type varName;)
     public float playerHealth,playerEnergy,playerMaxHealth, playerMaxEnergy;
-    public float playerStr,playerDex,playerMagic;
+    public float playerStr,playerDex,playerMagic,crystals;
     public int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions, currentAct;
 
     //defined here are stating values for vars saved. (this.varName = defaultValue;)
@@ -27,5 +27,6 @@ public class GameData
         this.gold = 0;
         this.playerHPPotions = 0;
         this.currentAct = 1;
+        this.crystals = 0;
     }
 }

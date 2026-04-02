@@ -49,5 +49,12 @@ public class DebugToolsScipt : MonoBehaviour
         {
             ToggleDebugTools();
         }
+        updateStatDisplay();
+    }
+
+    public void FullHealPlayer()
+    {
+        player.GetComponent<PlayerDataHandler>().HealPercentage(100);
+        updateStatDisplay();
     }
 }

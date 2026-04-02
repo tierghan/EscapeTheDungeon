@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   enemyName: Goblin
-  enemyMaxHealth: 15
-  enemyStr: 1
-  enemyDex: 0
-  enemyMagic: 0
+  enemyMaxHealth: 20
+  enemyStr: 5
+  enemyDex: 5
+  enemyMagic: 2
   enemyDamageReduction: 0
   enemyDodgeChance: 15
   enemyCritChance: 0
   goldReward: 5
   actID: 1
+  fightingStyle: 2
+  isBoss: 0

@@ -5,8 +5,11 @@ using TMPro;
 
 public class EventCardSystemScript : MonoBehaviour
 {
-    TMP_Text titleText, descriptionText, option1Text, option2Text, option3Text, option4Text;
-    GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, continueButton, eventPanel, titleObject, descriptionObject;
+    [SerializeField]
+    TMP_Text option1Text, option2Text, option3Text, option4Text, titleText, descriptionText;
+    [SerializeField]
+    GameObject eventPanel;
+    GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, continueButton, titleObject, descriptionObject;
 
     int eventCount = 4;
     /*
@@ -22,23 +25,16 @@ public class EventCardSystemScript : MonoBehaviour
     void Start()
     {
         titleObject = GameObject.Find("EventTitleText");
-        titleText = titleObject.GetComponent<TextMeshProUGUI>();
         descriptionObject = GameObject.Find("EventDescriptionText");
-        descriptionText = descriptionObject.GetComponent<TextMeshProUGUI>();
 
         optionButton1 = GameObject.Find("EventButtonOption1");
         optionButton2 = GameObject.Find("EventButtonOption2");
         optionButton3 = GameObject.Find("EventButtonOption3");
         optionButton4 = GameObject.Find("EventButtonOption4");
 
-        option1Text = optionButton1.GetComponentInChildren<TextMeshProUGUI>();
-        option2Text = optionButton2.GetComponentInChildren<TextMeshProUGUI>();
-        option3Text = optionButton3.GetComponentInChildren<TextMeshProUGUI>();
-        option4Text = optionButton4.GetComponentInChildren<TextMeshProUGUI>();
-
         player = GameObject.FindGameObjectWithTag("Player");
         continueButton = GameObject.Find("EventContinueButton");
-        eventPanel = GameObject.Find("EventPanel");
+        HideEventWindow();
     }
 
     public void ShowEventWindow()

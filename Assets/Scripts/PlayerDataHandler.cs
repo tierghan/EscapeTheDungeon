@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 {
+    public GameObject combatManager;
     private float playerHealth,playerEnergy;
-    private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy;
+    private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy, crystals;
 
     private int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions, currentAct;
     /*
@@ -23,6 +24,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         10| Gold = Currency for purchasing items.
         11| Health Potions = Number of health potions the player has.
         12| Current Act = The act the player is currently in.
+        13| Crystals = Currency for purchasing permanent upgrades.
     */
     
     // Can be used to add or subtract from any of the player's stats. Used for events and item effects. Try to avoid passing floats into int stats.
@@ -43,8 +45,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         stats.Add(gold);
         stats.Add(playerHPPotions);
         stats.Add(currentAct);
-
-
+        stats.Add(crystals);
         return stats;
     }
 
@@ -58,6 +59,12 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         return playerHPPotions;
     }
 
+    private void FixedUpdate() 
+    {   
+        playerDodgeChance = Mathf.Clamp((int)playerDex, 0, 100);
+        playerCritChance = Mathf.Clamp((int)playerDex, 0, 100);
+    }
+
 
     // Deals % based damage to player. Ignores DR and attacker crit chance. Passed int is the % of players max hp to be delt in damage.
     public void PercentageDamage(int damage)
@@ -68,6 +75,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         {
             GameOver();
         }
+        combatManager.GetComponent<CombatManagerScript>().UpdateHealthBars();
     }
 
     // Heals player based on the passed int as a % against player max hp.
@@ -78,17 +86,19 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         {
             playerHealth = playerMaxHealth;
         }
+        combatManager.GetComponent<CombatManagerScript>().UpdateHealthBars();
     }
 
     // Deals flat damage to player. DR is applied. Passed int is the attackers damage after crits and other modifiers applied.
     public void FlatDamage(int damage)
     {
-        int damageAmount = (int)(damage - (damage * (playerDamageReduction / 100f)));
+        int damageAmount = Mathf.Clamp((int)(damage - (damage * (playerDamageReduction / 100f))), 0, int.MaxValue);
         playerHealth -= damageAmount;
         if (playerHealth <= 0)
         {
             GameOver();
         }
+        combatManager.GetComponent<CombatManagerScript>().UpdateHealthBars();
     }
     
     public void AddStat(int stat, float amount)
@@ -120,6 +130,10 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 break;
             case 5:
                 playerEnergy += amount;
+                if (playerEnergy > playerMaxEnergy)
+                {
+                    playerEnergy = playerMaxEnergy;
+                }
                 break;
             case 6:
                 playerMaxEnergy += amount;
@@ -141,6 +155,9 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 break;
             case 12:
                 currentAct += (int)amount;
+                break;
+            case 13:
+                crystals += amount;
                 break;
             default:
                 Debug.Log("Invalid stat index.");
@@ -168,6 +185,12 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         this.gold = data.gold;
         this.playerHPPotions = data.playerHPPotions;
         this.currentAct = data.currentAct;
+        this.crystals = data.crystals;
+    }
+
+    void Start()
+    {
+        combatManager = GameObject.Find("CombatWindow");        
     }
 
     public void SaveData(ref GameData data)
@@ -185,5 +208,6 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         data.gold = this.gold;
         data.playerHPPotions = this.playerHPPotions;
         data.currentAct = this.currentAct;
+        data.crystals = this.crystals;
     }
 }

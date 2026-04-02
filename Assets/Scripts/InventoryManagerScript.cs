@@ -20,7 +20,7 @@ public class InventoryManagerScript : MonoBehaviour//,  IDataPersistance
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        combatManager = GameObject.FindGameObjectWithTag("CombatManager");
+        combatManager = GameObject.Find("CombatWindow");
         // itemInfoManager = GameObject.Find("ItemInfoManager");
         UpdateConsumableText();
 
@@ -54,6 +54,10 @@ public class InventoryManagerScript : MonoBehaviour//,  IDataPersistance
         consumableText.text = "Number of Health Potions: \n"+ player.GetComponent<PlayerDataHandler>().GetHealthPotions();
     }
 
+    void FixedUpdate()
+    {
+        UpdateConsumableText();
+    }
 /*
     public void ToggleInventory()
     {
