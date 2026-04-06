@@ -197,7 +197,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         currentAct = 1;
         combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
         eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
-        gameOverText.text = "You have died. \nYou gained " + crystals + " crystals this run, would you like to spend them on upgrades before starting a new run?";
+        gameOverText.text = "You have died. \nYou have " + crystals + " crystals. Would you like to spend them on upgrades before starting a new run?";
     }
 
     
