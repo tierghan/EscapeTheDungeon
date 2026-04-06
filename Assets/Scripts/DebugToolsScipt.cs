@@ -18,7 +18,7 @@ public class DebugToolsScipt : MonoBehaviour
     public void updateStatDisplay()
     {
         List<float> stats = player.GetComponent<PlayerDataHandler>().GetStats();
-        statText.text = "Str: " + stats[0] + "\nDex: " + stats[1] + "\nMagic: " + stats[2] + "\nHealth: " + stats[3] + "/" + stats[4] + "\nEnergy: " + stats[5] + "/" + stats[6] + "\nDamage Reduction: " + stats[7] + "%\nDodge Chance: " + stats[8] + "%\nCrit Chance: " + stats[9] + "%\nGold: " + stats[10] + "\n " + "Health Potions: " + stats[11] + "\nCurrent Act: " + stats[12];
+        statText.text = "Str: " + stats[0] + "\nDex: " + stats[1] + "\nMagic: " + stats[2] + "\nHealth: " + stats[3] + "/" + stats[4] + "\nEnergy: " + stats[5] + "/" + stats[6] + "\nDamage Reduction: " + stats[7] + "%\nDodge Chance: " + stats[8] + "%\nCrit Chance: " + stats[9] + "%\nGold: " + stats[10] + "\n " + "Health Potions: " + stats[11] + "\nCurrent Act: " + stats[12] + "\nCrystals: " + stats[13];
     }
 
     private void EnableDebugTools()
@@ -55,6 +55,12 @@ public class DebugToolsScipt : MonoBehaviour
     public void FullHealPlayer()
     {
         player.GetComponent<PlayerDataHandler>().HealPercentage(100);
+        updateStatDisplay();
+    }
+
+    public void killPlayer()
+    {
+        player.GetComponent<PlayerDataHandler>().PercentageDamage(100);
         updateStatDisplay();
     }
 }

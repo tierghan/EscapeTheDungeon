@@ -13,6 +13,7 @@ public class DataPersistanceManager : MonoBehaviour
     private FileDataHandler dataHandler;
     private List<IDataPersistance> dataPersistanceObjects;
 
+
     private void Awake()
     {
         if (instance != null)
@@ -49,6 +50,7 @@ public class DataPersistanceManager : MonoBehaviour
         foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
         {
             dataPersistanceObj.LoadData(gameData);
+            Debug.Log("Loaded data to: " + dataPersistanceObj.ToString());
         }
     }
 

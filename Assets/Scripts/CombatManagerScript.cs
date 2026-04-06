@@ -9,6 +9,8 @@ public class CombatManagerScript : MonoBehaviour
 {
     GameObject enemyPanel, optionPanel, player;
     [SerializeField]
+    GameObject combatUIParent;
+    [SerializeField]
     TMP_Text enemyNameText, combatLogText, playerStatsText, enemyStatsText;
     [SerializeField]
     public Slider playerHealthBar, enemyHealthBar;
@@ -442,21 +444,19 @@ public class CombatManagerScript : MonoBehaviour
 
 
 
-    void EnableCombatUI()
+    public void EnableCombatUI()
     {
-        enemyPanel.SetActive(true);
-        optionPanel.SetActive(true);
+        combatUIParent.SetActive(true);
     }
 
-    void DisableCombatUI()
+    public void DisableCombatUI()
     {
-        enemyPanel.SetActive(false);
-        optionPanel.SetActive(false);
+        combatUIParent.SetActive(false);
     }
 
     public void ToggleCombatUI()
     {
-        if (enemyPanel.activeSelf)
+        if (combatUIParent.activeSelf)
         {
             DisableCombatUI();
         }

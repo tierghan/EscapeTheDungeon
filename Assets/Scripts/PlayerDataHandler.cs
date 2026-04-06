@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 {
-    public GameObject combatManager;
+    GameObject combatManager, eventManager, gameOverWindow;
+    [SerializeField] 
+    TMP_Text gameOverText;
     private float playerHealth,playerEnergy;
     private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy, crystals;
 
@@ -179,8 +182,25 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 
     void GameOver()
     {
-        //TODO: Game Over State
+        playerHealth = 20f;
+        playerMaxHealth = 20f;
+        playerEnergy = 10f;
+        playerMaxEnergy = 10f;
+        playerStr = 10f;
+        playerDex = 10f;
+        playerMagic = 10f;
+        playerDamageReduction = 0;
+        playerDodgeChance = 0;
+        playerCritChance = 0;
+        gold = 0;
+        playerHPPotions = 0;
+        currentAct = 1;
+        combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
+        eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
+        gameOverText.text = "You have died. \nYou gained " + crystals + " crystals this run, would you like to spend them on upgrades before starting a new run?";
     }
+
+    
     
     public void LoadData(GameData data)
     {
@@ -202,7 +222,8 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 
     void Start()
     {
-        combatManager = GameObject.Find("CombatWindow");        
+        combatManager = GameObject.Find("CombatWindow");      
+        eventManager = GameObject.Find("EventWindow");  
     }
 
     public void SaveData(ref GameData data)
