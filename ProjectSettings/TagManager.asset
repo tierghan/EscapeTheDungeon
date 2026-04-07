@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - debug
+  - progression choice
   layers:
   - Default
   - TransparentFX

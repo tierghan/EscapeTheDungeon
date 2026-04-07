@@ -419,12 +419,24 @@ public class CombatManagerScript : MonoBehaviour
         enemyStatsText.text = "Str: " + enemyStr + "\nDex: " + enemyDex + "\nMagic: " + enemyMagic + "\nHealth: " + enemyHealth + "/" + currentEnemy.enemyMaxHealth + "\nDodge Chance: " + enemyDodgeChance + "%\nCrit Chance: " + enemyCritChance + "%\nDamage Reduction: " + enemyDamageReduction + "%";
     }
 
+
+    // Act Bosses are on the negated act values.
+    // ex. Act 1 Boss = -1
     private void GenerateEnemy(int currentAct)
     {
         switch (currentAct)
         {
             case 1:
                 currentEnemy = act1Enemies[Random.Range(0, act1Enemies.Count)];
+                enemyHealth = currentEnemy.enemyMaxHealth;
+                enemyStr = currentEnemy.enemyStr;
+                enemyDex = currentEnemy.enemyDex;
+                enemyMagic = currentEnemy.enemyMagic;
+                enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                break;
+            case -1: // Act 1 Boss
+                currentEnemy = Resources.Load<EnemyTemplate>("Enemies/Act1/Boss");
                 enemyHealth = currentEnemy.enemyMaxHealth;
                 enemyStr = currentEnemy.enemyStr;
                 enemyDex = currentEnemy.enemyDex;

@@ -5,9 +5,11 @@ using TMPro;
 
 public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 {
-    GameObject combatManager, eventManager, gameOverWindow;
+    GameObject combatManager, eventManager;
     [SerializeField] 
     TMP_Text gameOverText;
+    [SerializeField]
+    GameObject gameOverWindow;
     private float playerHealth,playerEnergy;
     private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy, crystals;
 
@@ -180,6 +182,11 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         }
     }
 
+    public void SetCurrentAct(int act)
+    {
+        currentAct = act;
+    }
+
     void GameOver()
     {
         playerHealth = 20f;
@@ -197,7 +204,8 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         currentAct = 1;
         combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
         eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
-        gameOverText.text = "You have died. \nYou have " + crystals + " crystals. Would you like to spend them on upgrades before starting a new run?";
+        gameOverWindow.SetActive(true);
+        gameOverText.text = "You have died.\n\nYou have " + crystals + " crystals.\n\nWould you like to spend them on upgrades before starting a new run?";
     }
 
     
