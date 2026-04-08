@@ -9,7 +9,7 @@ public class CombatManagerScript : MonoBehaviour
 {
     GameObject enemyPanel, optionPanel, player;
     [SerializeField]
-    GameObject combatUIParent;
+    GameObject combatUIParent, progressionPanel;
     [SerializeField]
     TMP_Text enemyNameText, combatLogText, playerStatsText, enemyStatsText;
     [SerializeField]
@@ -20,20 +20,21 @@ public class CombatManagerScript : MonoBehaviour
     string enemyFightingStyle, combatLogOutput, enemyName;
     int turnCounter, combatRewardGold, combatRewardCrystals;
     bool enemyDefending,enemyDodging, allowPlayerInput, playerDodging, playerDefending, playerFleeing;
-    List<float> playerStats = new List<float>();
+    List<float> playerStats;
 
     List<EnemyTemplate> act1Enemies = new List<EnemyTemplate>();
 
     void Start()
     {
+
         enemyPanel = GameObject.Find("EnemyPanel");
         optionPanel = GameObject.Find("CombatOptionPanel");
-        // DisableCombatUI();
-        act1Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1"));
+        act1Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Normal"));
         player = GameObject.FindGameObjectWithTag("Player");
         playerData = player.GetComponent<PlayerDataHandler>();
         playerStats = playerData.GetStats();
         GenerateEnemy(1);
+        DisableCombatUI();
     }
 
 
@@ -76,6 +77,7 @@ public class CombatManagerScript : MonoBehaviour
         }
         PrintCombatLogLine();
         DisableCombatUI();
+        progressionPanel.GetComponent<ProgressionManagerScript>().NewExplore();
     }
 
     void PlayerTurn()

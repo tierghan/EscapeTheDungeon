@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.UI;
 using UnityEngine;
 using TMPro;
 
@@ -7,11 +8,10 @@ public class ProgressionManagerScript : MonoBehaviour
 {
     int currentAct, actProgress;
 
-    [SerializeField]
     List<GameObject>  generalEvents;
 
     [SerializeField] 
-    GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager;
+    GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager, ProgressionPanel, gameOverWindow;
     GameObject player, bossEvent;
     [SerializeField]
     TMP_Text actProgressText;
@@ -20,6 +20,12 @@ public class ProgressionManagerScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         FetchActFromPlayerData();
+        generalEvents = new List<GameObject>(GameObject.FindGameObjectsWithTag("progression choice"));
+        foreach (GameObject obj in generalEvents)
+        {
+            obj.transform.Translate(new Vector3(50,50,0));
+        }
+        NewExplore();
     }
 
     public void PushActToPlayerData()
@@ -36,15 +42,21 @@ public class ProgressionManagerScript : MonoBehaviour
     {
         currentAct = 1;
         actProgress = 0;
+        combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
+        eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
+        gameOverWindow.SetActive(false);
+        NewExplore();
     }
 
     public void NewExplore()
     {
+        HideChoices();
+        Debug.Log("Current Act Progress: " + actProgress); 
         if(actProgress <= 15)
         {
             GenerateGeneralEvents();
         }
-        else if(currentAct >= 1 && actProgress >= 15)
+        else if(actProgress > 15)
         {
             GenerateBossEvent();
         }
@@ -58,60 +70,38 @@ public class ProgressionManagerScript : MonoBehaviour
     public void GenerateGeneralEvents()
     {
         Debug.Log("Generating General Events");
-        int rand = Random.Range(0, generalEvents.Count);
-        for (int i = 0; i<=3; i++)
-        {
-            GameObject currentEvent = generalEvents[rand];
-            Instantiate(currentEvent);
-            Debug.Log("Generated Event: " + currentEvent.name);
-            if (i == 1)
-            {
-                currentEvent.transform.position = new Vector3(-220, 0, 0);
-            }
-            else if (i == 2)
-            {
-                currentEvent.transform.position = new Vector3(0, 0, 0);
-            }
-            else if (i == 3)
-            {
-                currentEvent.transform.position = new Vector3(220, 0, 0);
-            }
-            GameObject currentEventButton = currentEvent.transform.Find("ChoiceButton").gameObject;
-            Debug.Log("Current Event Button: " + currentEventButton.name);
-            switch (currentEvent.name)
-            {
-                case "ExploreChoiceCombat":
-                    AddButtonCall(currentEventButton, 0);
-                    break;
-                case "ExploreChoiceEvent":
-                    AddButtonCall(currentEventButton, 1);
-                    break;
-            }
-        }
-    }
-
-    public void AddButtonCall(GameObject buttonObject, int choice)
-    {
-        /*
-        Choice Values:
-            -1 = Act 1 Boss
-            0 = Combat
-            1 = Event
-
-        */
+        List<string> eventCatagories = new List<string>();
         
-        switch (choice)
+        //Manually comment out entries to disable player encountering them for testing or what not.
+        eventCatagories.Add("Combat");
+        eventCatagories.Add("Event");
+        // eventCatagories.Add("Shop");
+        // eventCatagories.Add("Rest");
+        // eventCatagories.Add("Detour");
+        // eventCatagories.Add("Training");
+        for (int i = 0; i < 3; i++)
         {
-            case 0:
-                buttonObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { this.ExploreChoiceCombat(); });
-                break;
-            case 1:
-                buttonObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { this.ExploreChoiceEvent(); });
-                break;
+            int rand = Random.Range(0, eventCatagories.Count);
+            GameObject currentEvent = GameObject.Find("ExploreChoice"+eventCatagories[rand]+i);
+            Debug.Log("Generated " + currentEvent.name + " for choice " + i + " with event catagory " + eventCatagories[rand]);
+            switch (i)
+            {
+                case 0:
+                    currentEvent.transform.position = new Vector3(-2.5f, 1.5f, 0);
+                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    break;
+                case 1:
+                    currentEvent.transform.position = new Vector3(0, 1.5f, 0);
+                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    break;
+                case 2:
+                    currentEvent.transform.position = new Vector3(2.5f, 1.5f, 0);
+                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    break;
+            }
         }
-        Debug.Log("Added Button Call to " + buttonObject.name + " for choice " + choice);
+        
     }
-
     public void GenerateBossEvent()
     {
         switch (currentAct)
@@ -126,22 +116,21 @@ public class ProgressionManagerScript : MonoBehaviour
                 bossEvent = act3BossEvent;
                 break;
         }
-        int rand = Random.Range(0, bossEvent.transform.childCount);
-        Instantiate(bossEvent.transform.GetChild(rand).gameObject);
         bossEvent.transform.position = new Vector3(0, 0, 0);
+        Debug.Log("Generated " + bossEvent.name + " for Act " + currentAct);
+        //TODO: Add boss event logic and stuff.
     }
 
     public void HideChoices()
     {
-        List<GameObject> choices = new List<GameObject>();
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("progression choice"))
+        foreach (GameObject obj in generalEvents)
         {
-            choices.Add(obj);
+            obj.transform.position = new Vector3(50, 50, 0);
         }
-        foreach (GameObject obj in choices)
-        {
-            Destroy(obj);
-        }
+        act1BossEvent.transform.position = new Vector3(50, 50, 0);
+        act2BossEvent.transform.position = new Vector3(50, 50, 0);
+        act3BossEvent.transform.position = new Vector3(50, 50, 0);
+
     }
 
     public void IncrementActProgression()
@@ -152,6 +141,7 @@ public class ProgressionManagerScript : MonoBehaviour
     public void ExploreChoiceCombat()
     {
         combatManager.GetComponent<CombatManagerScript>().StartCombat();
+        combatManager.GetComponent<CombatManagerScript>().EnableCombatUI();
         HideChoices();
         IncrementActProgression();
     }
@@ -163,7 +153,7 @@ public class ProgressionManagerScript : MonoBehaviour
         IncrementActProgression();
     }
 
-    private void FixedUpdate() 
+    private void Update() 
     {
         actProgressText.text = "Act Progress: " + actProgress + "/15";
     }

@@ -8,8 +8,12 @@ public class EventCardSystemScript : MonoBehaviour
     [SerializeField]
     TMP_Text option1Text, option2Text, option3Text, option4Text, titleText, descriptionText;
     [SerializeField]
-    GameObject eventPanel;
-    GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, continueButton, titleObject, descriptionObject;
+    GameObject eventPanel,continueButton;
+    GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, titleObject, descriptionObject;
+    int randomStat;
+    List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
+    
+
 
     int eventCount = 4;
     /*
@@ -33,7 +37,8 @@ public class EventCardSystemScript : MonoBehaviour
         optionButton4 = GameObject.Find("EventButtonOption4");
 
         player = GameObject.FindGameObjectWithTag("Player");
-        continueButton = GameObject.Find("EventContinueButton");
+        List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
+
         HideEventWindow();
     }
 
@@ -230,7 +235,9 @@ public class EventCardSystemScript : MonoBehaviour
                 else
                 {
                     // TODO: Item system should give the player a random item from this outcome.
-                    descriptionText.text = "You open the chest, finding inside a ";
+                    randomStat = Random.Range(0, stats.Count);
+                    descriptionText.text = "You open the chest, finding inside a magic item that increases your " + stats[randomStat] + " by 5 points.\n\n+5 " + stats[randomStat];
+                    player.GetComponent<PlayerDataHandler>().AddStat(randomStat, 5f);
                 }
                 hideOptions();
                 break;

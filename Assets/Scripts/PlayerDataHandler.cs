@@ -182,6 +182,32 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         }
     }
 
+    public void AddRandomStat(int multiplier)
+    {
+        int stat = Random.Range(0, 6);
+        switch (stat)
+        {
+            case 0:
+                playerStr += multiplier;
+                break;
+            case 1:
+                playerDex += multiplier;
+                break;
+            case 2:
+                playerMagic += multiplier;
+                break;
+            case 3:
+                playerMaxHealth += multiplier;
+                break;
+            case 4:
+                playerMaxEnergy += multiplier;
+                break;
+            case 5:
+                playerDamageReduction += multiplier;
+                break;
+        }
+    }
+
     public void SetCurrentAct(int act)
     {
         currentAct = act;
