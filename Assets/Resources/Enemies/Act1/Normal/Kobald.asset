@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eed176d184d02f4ab41f776942508b9, type: 3}
-  m_Name: Example Boss
+  m_Name: Kobald
   m_EditorClassIdentifier: 
-  enemyName: Example Boss
-  enemyMaxHealth: 200
-  enemyStr: 20
-  enemyDex: 20
-  enemyMagic: 20
-  enemyDamageReduction: 10
-  enemyDodgeChance: 5
-  enemyCritChance: 35
-  goldReward: 50
+  enemyName: Kobald
+  enemyMaxHealth: 35
+  enemyStr: 5
+  enemyDex: 15
+  enemyMagic: 1
+  enemyDamageReduction: 3
+  enemyDodgeChance: 35
+  enemyCritChance: 45
+  goldReward: 20
   actID: 1
-  fightingStyle: 0
-  isBoss: 1
+  fightingStyle: 1
+  isBoss: 0
