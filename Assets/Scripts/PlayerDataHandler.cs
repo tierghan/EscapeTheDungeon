@@ -166,6 +166,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 break;
             case 4:
                 playerMaxHealth += amount;
+                playerHealth += amount;
                 break;
             case 5:
                 playerEnergy += amount;
