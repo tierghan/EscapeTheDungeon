@@ -237,6 +237,31 @@ public class EventCardSystemScript : MonoBehaviour
                     // TODO: Item system should give the player a random item from this outcome.
                     randomStat = Random.Range(0, stats.Count);
                     descriptionText.text = "You open the chest, finding inside a magic item that increases your " + stats[randomStat] + " by 5 points.\n\n+5 " + stats[randomStat];
+                    if (randomStat == 0)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(0, 5f);
+                    }
+                    else if (randomStat == 1)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(1, 5f);
+                    }
+                    else if (randomStat == 2)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(2, 5f);
+                    }
+                    else if (randomStat == 3)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(4, 5f);
+                    }
+                    else if (randomStat == 4)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(5, 5f);
+                    }
+                    else if (randomStat == 5)
+                    {
+                        player.GetComponent<PlayerDataHandler>().AddStat(7, 5f);
+                    }
+                    
                     player.GetComponent<PlayerDataHandler>().AddStat(randomStat, 5f);
                 }
                 hideOptions();

@@ -86,6 +86,11 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     {
         crystals = (float)amount;
     }
+
+    public void FillEnergy()
+    {
+        playerEnergy = playerMaxEnergy;
+    }
     
 
     public int GetGold()

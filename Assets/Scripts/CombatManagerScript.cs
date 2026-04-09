@@ -42,6 +42,7 @@ public class CombatManagerScript : MonoBehaviour
     {
         UpdatePlayerStats();
         GenerateEnemy((int)playerStats[12]);
+        playerData.FillEnergy();
         enemyName = currentEnemy.enemyName;
         turnCounter = 0;
         combatLogOutput = "A wild " + enemyName + " appears!";
