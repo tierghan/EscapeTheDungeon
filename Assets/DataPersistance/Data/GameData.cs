@@ -10,6 +10,7 @@ public class GameData
     public float playerHealth,playerEnergy,playerMaxHealth, playerMaxEnergy;
     public float playerStr,playerDex,playerMagic,crystals;
     public int playerDamageReduction, playerDodgeChance, playerCritChance, gold, playerHPPotions, currentAct;
+    public int strUpgradeLevel, dexUpgradeLevel, magUpgradeLevel, drUpgradeLevel, crystalUpgradeLevel, goldUpgradeLevel, potionUpgradeLevel, maxHPUpgradeLevel; 
 
     //defined here are stating values for vars saved. (this.varName = defaultValue;)
     public GameData()
@@ -28,5 +29,12 @@ public class GameData
         this.playerHPPotions = 0;
         this.currentAct = 1;
         this.crystals = 0;
+        this.strUpgradeLevel = 0;
+        this.dexUpgradeLevel = 0;
+        this.magUpgradeLevel = 0;
+        this.drUpgradeLevel = 0;
+        this.crystalUpgradeLevel = 0;
+        this.goldUpgradeLevel = 0;
+        this.potionUpgradeLevel = 0;
     }
 }
