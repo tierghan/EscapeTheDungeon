@@ -42,6 +42,14 @@ public class FileDataHandler
 
     public void Save(GameData data)
     {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            string path = Path.Combine("idbfs", Application.productName)
+            if (!File.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        #else
+        #endif
         string fullPath = Path.Combine(dataDirPath, dataFileName);
         try
         {
