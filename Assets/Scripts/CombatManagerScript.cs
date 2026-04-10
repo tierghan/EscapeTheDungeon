@@ -23,6 +23,7 @@ public class CombatManagerScript : MonoBehaviour
     List<float> playerStats;
 
     List<EnemyTemplate> act1Enemies = new List<EnemyTemplate>();
+    List<EnemyTemplate> act1BossEnemies = new List<EnemyTemplate>();
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class CombatManagerScript : MonoBehaviour
         enemyPanel = GameObject.Find("EnemyPanel");
         optionPanel = GameObject.Find("CombatOptionPanel");
         act1Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Normal"));
+        act1BossEnemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Boss"));
         player = GameObject.FindGameObjectWithTag("Player");
         playerData = player.GetComponent<PlayerDataHandler>();
         playerStats = playerData.GetStats();
@@ -71,6 +73,7 @@ public class CombatManagerScript : MonoBehaviour
             {
                 combatRewardCrystals *= 2;
                 combatRewardGold *= 2;
+                progressionPanel.GetComponent<ProgressionManagerScript>().IncrementAct();
             }
             combatLogOutput += "You defeated " + enemyName + "! You earned " + combatRewardGold + " gold and " + combatRewardCrystals + " crystals.";
             playerData.AddStat(10, combatRewardGold);
@@ -101,6 +104,7 @@ public class CombatManagerScript : MonoBehaviour
 
     void EnemyTurn()
     {
+        UpdateHealthBars();
         turnCounter++;
         int enemyDecision = 1;
         bool crit = false;
@@ -231,16 +235,17 @@ public class CombatManagerScript : MonoBehaviour
             damage = (int)(damage - (damage * 0.5f));
             combatLogOutput += "You were defending, reducing the damage. ";
         }
-        damage = (int)(damage - (damage * (playerData.GetStats()[7] / 100f)));
+        damage = (int)(damage - (playerData.GetStats()[7]));
         playerData.FlatDamage(damage);
         combatLogOutput += enemyName + " dealt " + damage + " damage. ";
+        UpdateHealthBars();
         return true;
     }
 
     void EnemyMagAttack()
     {
         int damage = (int)enemyMagic;
-        damage = (int)(damage + (damage * (playerData.GetStats()[7] / 100f)));
+        damage = (int)(damage - (playerData.GetStats()[7]));
         if (playerDodging)
         {
             int dodgeCheck = Random.Range(0, 100);
@@ -252,6 +257,7 @@ public class CombatManagerScript : MonoBehaviour
         }
         playerData.FlatDamage(damage);
         combatLogOutput += enemyName + " dealt " + damage + " magic damage, ignoring your defenses. ";
+        UpdateHealthBars();
     }
 
     void EnemyDefend()
@@ -274,6 +280,7 @@ public class CombatManagerScript : MonoBehaviour
             {
                 playerData.AddStat(5, -3);
                 int damage = (int)playerStats[0];
+                damage = (int)(damage - (enemyDamageReduction));
                 if (enemyDefending)
                 {
                     damage = (int)(damage - (damage * 0.5f));
@@ -302,7 +309,6 @@ public class CombatManagerScript : MonoBehaviour
                     damage *= 2;
                     combatLogOutput += "CRITICAL HIT.";
                 }
-                damage = (int)(damage - (damage * (enemyDamageReduction / 100f)));
                 enemyHealth -= damage;
                 UpdateHealthBars();
                 allowPlayerInput = false;
@@ -327,7 +333,6 @@ public class CombatManagerScript : MonoBehaviour
             {
                 playerData.AddStat(5, -5);
                 int damage = (int)playerStats[2];
-                damage = (int)(damage + (damage * (enemyDamageReduction / 100f)));
                 combatLogOutput += "You strike " + enemyName + " for " + damage + " magic damage, ignoring their defenses. ";
                 if (enemyDodging)
                 {
@@ -419,7 +424,7 @@ public class CombatManagerScript : MonoBehaviour
 
     public void UpdateEnemyStats()
     {
-        enemyStatsText.text = "Str: " + enemyStr + "\nDex: " + enemyDex + "\nMagic: " + enemyMagic + "\nHealth: " + enemyHealth + "/" + currentEnemy.enemyMaxHealth + "\nDodge Chance: " + enemyDodgeChance + "%\nCrit Chance: " + enemyCritChance + "%\nDamage Reduction: " + enemyDamageReduction + "%";
+        enemyStatsText.text = "Str: " + enemyStr + "\nDex: " + enemyDex + "\nMagic: " + enemyMagic + "\nHealth: " + enemyHealth + "/" + currentEnemy.enemyMaxHealth + "\nDodge Chance: " + enemyDodgeChance + "%\nCrit Chance: " + enemyCritChance + "%\nDamage Reduction: " + enemyDamageReduction;
     }
 
 
@@ -436,15 +441,19 @@ public class CombatManagerScript : MonoBehaviour
                 enemyDex = currentEnemy.enemyDex;
                 enemyMagic = currentEnemy.enemyMagic;
                 enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
                 break;
             case -1: // Act 1 Boss
-                currentEnemy = Resources.Load<EnemyTemplate>("Enemies/Act1/Boss");
+                currentEnemy = act1BossEnemies[Random.Range(0, act1BossEnemies.Count)];
                 enemyHealth = currentEnemy.enemyMaxHealth;
                 enemyStr = currentEnemy.enemyStr;
                 enemyDex = currentEnemy.enemyDex;
                 enemyMagic = currentEnemy.enemyMagic;
                 enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
                 break;
             case 2:
@@ -456,6 +465,22 @@ public class CombatManagerScript : MonoBehaviour
         }
     }
 
+    public void StartBossCombat(int currentAct)
+    {
+        
+        Debug.Log("Starting boss combat for Act " + currentAct);
+        UpdatePlayerStats();
+        GenerateEnemy(currentAct);
+        playerData.FillEnergy();
+        enemyName = currentEnemy.enemyName;
+        turnCounter = 0;
+        combatLogOutput = "Boss Fight! The " + enemyName + " stands before you!";
+        UpdateHealthBars();
+        enemyNameText.text = enemyName;
+        combatLogText.text = combatLogOutput;
+        playerFleeing = false;
+        PlayerTurn();
+    }
 
 
 

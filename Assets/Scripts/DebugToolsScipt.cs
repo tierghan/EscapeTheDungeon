@@ -45,7 +45,7 @@ public class DebugToolsScipt : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F3))
+        if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             ToggleDebugTools();
         }

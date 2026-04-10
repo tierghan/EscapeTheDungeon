@@ -163,7 +163,7 @@ public class EventCardSystemScript : MonoBehaviour
         {
             // Event 0: Mystery Potion - Drink the potion
             case 0:
-                player.GetComponent<PlayerDataHandler>().AddStat(3, -15);
+                player.GetComponent<PlayerDataHandler>().FlatDamage(5);
                 int randomStatType = Random.Range(0, 2);
                 int randomStat = 0;
                 string statName = "";
@@ -209,7 +209,7 @@ public class EventCardSystemScript : MonoBehaviour
                             break;
                     }
                 }
-                descriptionText.text = "You drink the stange potion, feeling some pain in your gut. Once it subsides, you feel a little better than before.\n\n-15 HP\n+1 " + statName;
+                descriptionText.text = "You drink the stange potion, feeling some pain in your gut. Once it subsides, you feel a little better than before.\n\n-5 HP\n+1 " + statName;
                 hideOptions();
                 break;
             
@@ -306,7 +306,7 @@ public class EventCardSystemScript : MonoBehaviour
                 if (isMimic)
                 {
                     player.GetComponent<PlayerDataHandler>().AddStat(10, 50);
-                    descriptionText.text = "You decide to destroy the chest, attacking it wiht your weapon. The wooden container bleeds red as your suprise attack against the mimic works wonder. Inside the creature was a coin pouch from a previous victim with 50 gold inside, nice.\n\n +50 Gold";
+                    descriptionText.text = "You decide to destroy the chest, attacking it wiht your weapon. The wooden container bleeds red as your suprise attack against the mimic works wonders. Inside the creature was a coin pouch from a previous victim with 50 gold inside, nice.\n\n +50 Gold";
                 }
                 else
                 {

@@ -12,7 +12,7 @@ public class MetaUpgradeManagerScript : MonoBehaviour
     List<int> upgradeLevels;
 
     [SerializeField]
-    TMP_Text strNameText, dexNameText, magNameText, drNameText, crystalGainNameText, goldGainNameText, potionGainNameText, maxHPGainNameText;
+    TMP_Text strNameText, dexNameText, magNameText, drNameText, crystalGainNameText, goldGainNameText, potionGainNameText, maxHPGainNameText, crystalAmountText;
 
     public void OpenUpgradeWindow()
     {
@@ -58,6 +58,7 @@ public class MetaUpgradeManagerScript : MonoBehaviour
         goldGainNameText.text = "Increased Gold Gain\n("+upgradeLevels[5]+"/"+goldUpgradeMaxLevel+")";
         potionGainNameText.text = "Starting Health Potions\n("+upgradeLevels[6]+"/"+potionUpgradeMaxLevel+")";
         maxHPGainNameText.text = "Increased Max Health\n("+upgradeLevels[7]+"/"+maxHPUpgradeMaxLevel+")";
+        crystalAmountText.text = "Crystals: " + playerCrystals;
     }
 
     void Start()

@@ -5,7 +5,7 @@ using TMPro;
 
 public class ProgressionManagerScript : MonoBehaviour
 {
-    int currentAct, actProgress;
+    int currentAct, actProgress = 1;
 
     List<GameObject>  generalEvents;
 
@@ -40,7 +40,7 @@ public class ProgressionManagerScript : MonoBehaviour
     public void NewRun()
     {
         currentAct = 1;
-        actProgress = 0;
+        actProgress = 1;
         combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
         eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
         gameOverWindow.SetActive(false);
@@ -103,6 +103,7 @@ public class ProgressionManagerScript : MonoBehaviour
     }
     public void GenerateBossEvent()
     {
+        Debug.Log("Generating Boss Event | Current Act: " + currentAct);
         switch (currentAct)
         {
             case 1:
@@ -115,9 +116,16 @@ public class ProgressionManagerScript : MonoBehaviour
                 bossEvent = act3BossEvent;
                 break;
         }
-        bossEvent.transform.position = new Vector3(0, 0, 0);
+        bossEvent.transform.position = new Vector3(0, 1.5f, 0);
         Debug.Log("Generated " + bossEvent.name + " for Act " + currentAct);
         //TODO: Add boss event logic and stuff.
+    }
+
+    public void BossChoice()
+    {
+        combatManager.GetComponent<CombatManagerScript>().StartBossCombat(currentAct*-1);
+        combatManager.GetComponent<CombatManagerScript>().EnableCombatUI();
+        HideChoices();
     }
 
     public void HideChoices()
@@ -135,6 +143,13 @@ public class ProgressionManagerScript : MonoBehaviour
     public void IncrementActProgression()
     {
         actProgress++;
+    }
+
+    public void IncrementAct()
+    {
+        currentAct++;
+        PushActToPlayerData();
+        actProgress = 1;
     }
 
     public void ExploreChoiceCombat()
