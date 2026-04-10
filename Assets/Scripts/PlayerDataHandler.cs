@@ -213,7 +213,6 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 {
                     gold += (int)amount;
                 }
-                gold += (int)amount;
                 break;
             case 11:
                 playerHPPotions += (int)amount;

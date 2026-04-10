@@ -19,7 +19,7 @@ public class CombatManagerScript : MonoBehaviour
     float enemyHealth, enemyStr, enemyDex, enemyMagic, enemyDodgeChance, enemyCritChance, enemyDamageReduction;
     string enemyFightingStyle, combatLogOutput, enemyName;
     int turnCounter, combatRewardGold, combatRewardCrystals;
-    bool enemyDefending,enemyDodging, allowPlayerInput, playerDodging, playerDefending, playerFleeing;
+    bool enemyDefending,enemyDodging, allowPlayerInput, playerDodging, playerDefending, playerFleeing, enemyIsBoss;
     List<float> playerStats;
 
     List<EnemyTemplate> act1Enemies = new List<EnemyTemplate>();
@@ -69,7 +69,7 @@ public class CombatManagerScript : MonoBehaviour
         {
             combatRewardGold = (int)currentEnemy.goldReward;
             combatRewardCrystals = (int)currentEnemy.actID;
-            if (currentEnemy.isBoss)
+            if (enemyIsBoss)
             {
                 combatRewardCrystals *= 2;
                 combatRewardGold *= 2;
@@ -444,6 +444,7 @@ public class CombatManagerScript : MonoBehaviour
                 enemyCritChance = currentEnemy.enemyCritChance;
                 enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
                 break;
             case -1: // Act 1 Boss
                 currentEnemy = act1BossEnemies[Random.Range(0, act1BossEnemies.Count)];
@@ -455,6 +456,7 @@ public class CombatManagerScript : MonoBehaviour
                 enemyCritChance = currentEnemy.enemyCritChance;
                 enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
                 break;
             case 2:
                 //generate act 2 enemy
@@ -467,7 +469,7 @@ public class CombatManagerScript : MonoBehaviour
 
     public void StartBossCombat(int currentAct)
     {
-        
+
         Debug.Log("Starting boss combat for Act " + currentAct);
         UpdatePlayerStats();
         GenerateEnemy(currentAct);

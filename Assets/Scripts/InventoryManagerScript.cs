@@ -45,6 +45,7 @@ public class InventoryManagerScript : MonoBehaviour//,  IDataPersistance
             if (combatManager.GetComponent<CombatManagerScript>().enabled)
             {
                 combatManager.GetComponent<CombatManagerScript>().UpdatePlayerStats();
+                combatManager.GetComponent<CombatManagerScript>().UpdateHealthBars();
             }
         }
     }

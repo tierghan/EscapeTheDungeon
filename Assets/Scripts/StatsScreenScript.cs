@@ -69,4 +69,9 @@ public class StatsScreenScript : MonoBehaviour
         statsTextRight.text = $"STR: {playerStats[0]}\nDEX: {playerStats[1]}\nWis: {playerStats[2]}\nDodge: {playerStats[8]}%\nCrit: {playerStats[9]}%\nDR: {playerStats[7]}";
     }
 
+    private void FixedUpdate()
+    {
+        UpdateStatsText();
+    }
+
 }

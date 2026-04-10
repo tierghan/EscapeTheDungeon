@@ -11,6 +11,10 @@ public class ProgressionManagerScript : MonoBehaviour
 
     [SerializeField] 
     GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager, ProgressionPanel, gameOverWindow;
+
+    [SerializeField]
+    GameObject combat1, combat2, combat3, event1, event2, event3;
+
     GameObject player, bossEvent;
     [SerializeField]
     TMP_Text actProgressText;
@@ -20,10 +24,7 @@ public class ProgressionManagerScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         FetchActFromPlayerData();
         generalEvents = new List<GameObject>(GameObject.FindGameObjectsWithTag("progression choice"));
-        foreach (GameObject obj in generalEvents)
-        {
-            obj.transform.Translate(new Vector3(50,50,0));
-        }
+        HideChoices();
         NewExplore();
     }
 
@@ -81,23 +82,47 @@ public class ProgressionManagerScript : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int rand = Random.Range(0, eventCatagories.Count);
-            GameObject currentEvent = GameObject.Find("ExploreChoice"+eventCatagories[rand]+i);
-            Debug.Log("Generated " + currentEvent.name + " for choice " + i + " with event catagory " + eventCatagories[rand]);
+            string catagory = eventCatagories[rand];
+            GameObject currentEvent = null;
+            Debug.Log("Generated " + catagory + " event for event slot " + (i+1));
             switch (i)
             {
                 case 0:
-                    currentEvent.transform.position = new Vector3(-2.5f, 1.5f, 0);
-                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    if (catagory == "Combat")
+                    {
+                        currentEvent = combat1;
+                    }
+                    else if (catagory == "Event")
+                    {
+                        currentEvent = event1;
+                    }
                     break;
                 case 1:
-                    currentEvent.transform.position = new Vector3(0, 1.5f, 0);
-                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    if (catagory == "Combat")
+                    {
+                        currentEvent = combat2;
+                    }
+                    else if (catagory == "Event")
+                    {
+                        currentEvent = event2;
+                    }
                     break;
                 case 2:
-                    currentEvent.transform.position = new Vector3(2.5f, 1.5f, 0);
-                    Debug.Log("Translated " + currentEvent.name + " to " + currentEvent.transform.position);
+                    if (catagory == "Combat")
+                    {
+                        currentEvent = combat3;
+                    }
+                    else if (catagory == "Event")
+                    {
+                        currentEvent = event3;
+                    }
+                    break;
+                default:
+                    Debug.Log("Invalid event index generated: " + i);
+                    currentEvent = combat1;
                     break;
             }
+            currentEvent.SetActive(true);
         }
         
     }
@@ -116,7 +141,7 @@ public class ProgressionManagerScript : MonoBehaviour
                 bossEvent = act3BossEvent;
                 break;
         }
-        bossEvent.transform.position = new Vector3(0, 1.5f, 0);
+        bossEvent.SetActive(true);
         Debug.Log("Generated " + bossEvent.name + " for Act " + currentAct);
         //TODO: Add boss event logic and stuff.
     }
@@ -132,11 +157,11 @@ public class ProgressionManagerScript : MonoBehaviour
     {
         foreach (GameObject obj in generalEvents)
         {
-            obj.transform.position = new Vector3(50, 50, 0);
+            obj.SetActive(false);
         }
-        act1BossEvent.transform.position = new Vector3(50, 50, 0);
-        act2BossEvent.transform.position = new Vector3(50, 50, 0);
-        act3BossEvent.transform.position = new Vector3(50, 50, 0);
+        act1BossEvent.SetActive(false);
+        act2BossEvent.SetActive(false);
+        act3BossEvent.SetActive(false);
 
     }
 

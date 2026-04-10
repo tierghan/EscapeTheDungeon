@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Activated Mimic
   enemyMaxHealth: 50
-  enemyStr: 2
+  enemyStr: 4
   enemyDex: 1
   enemyMagic: 1
   enemyDamageReduction: 10
