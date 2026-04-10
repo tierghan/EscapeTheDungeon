@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.IO;
 
 public class DataPersistanceManager : MonoBehaviour
 {
@@ -25,8 +26,18 @@ public class DataPersistanceManager : MonoBehaviour
 
     private void Start()
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
-        this.dataPersistanceObjects = FindAllDataPersistanceObjects();
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            string fullPath = Path.Combine("idbfs", Application.productName);
+            if (!File.Exists(fullPath))
+            {
+                Directory.CreateDirectory(fullPath);
+            }
+                this.dataHandler = new FileDataHandler(Path.Combine(Application.persistentDataPath, "idbfs"), fileName);
+                this.dataPersistanceObjects = FindAllDataPersistanceObjects();
+        #else
+            this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+            this.dataPersistanceObjects = FindAllDataPersistanceObjects();
+        #endif
         LoadGame();
     }
 

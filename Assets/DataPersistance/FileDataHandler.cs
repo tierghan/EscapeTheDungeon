@@ -43,17 +43,18 @@ public class FileDataHandler
     public void Save(GameData data)
     {
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string path = Path.Combine("idbfs", Application.productName)
-            if (!File.Exists(path))
+            string fullPath = Path.Combine("idbfs", Application.productName);
+            if (!File.Exists(fullPath))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(fullPath);
             }
         #else
-        #endif
         string fullPath = Path.Combine(dataDirPath, dataFileName);
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+        #endif
+        
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
             string dataToStore = JsonUtility.ToJson(data, true);
 
             using(FileStream stream = new FileStream(fullPath, FileMode.Create))
