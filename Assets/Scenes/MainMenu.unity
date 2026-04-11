@@ -997,7 +997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb175d968d7828488544d497bbda22a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatManager: {fileID: 0}
+  gameOverText: {fileID: 0}
+  gameOverWindow: {fileID: 0}
 --- !u!4 &1521340144
 Transform:
   m_ObjectHideFlags: 0

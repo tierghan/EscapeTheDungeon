@@ -15,6 +15,8 @@ public class GameData
     //defined here are stating values for vars saved. (this.varName = defaultValue;)
     public GameData()
     {
+        
+        
         this.playerHealth = 20f;
         this.playerMaxHealth = 20f;
         this.playerEnergy = 10f;

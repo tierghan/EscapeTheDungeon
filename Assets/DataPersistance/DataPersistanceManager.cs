@@ -44,13 +44,73 @@ public class DataPersistanceManager : MonoBehaviour
 
     public void NewGame()
     {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            string webGLDataKey = "escapeTheDungeonSaveData1";
+
+            PlayerPrefs.SetFloat(webGLDataKey + "Health", 20);
+            PlayerPrefs.SetFloat(webGLDataKey + "MaxHealth", 20);
+            PlayerPrefs.SetFloat(webGLDataKey + "Energy", 10);
+            PlayerPrefs.SetFloat(webGLDataKey + "MaxEnergy", 10);
+            PlayerPrefs.SetFloat(webGLDataKey + "Str", 10);
+            PlayerPrefs.SetFloat(webGLDataKey + "Dex", 10);
+            PlayerPrefs.SetFloat(webGLDataKey + "Magic", 10);
+            PlayerPrefs.SetInt(webGLDataKey + "DamageReduction", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "DodgeChance", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "CritChance", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "Gold", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "HPPotions", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "CurrentAct", 1);
+            PlayerPrefs.SetFloat(webGLDataKey + "Crystals", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "StrUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "DexUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "MagUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "DrUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "CrystalUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "GoldUpgradeLevel", 0);
+            PlayerPrefs.SetInt(webGLDataKey + "PotionUpgradeLevel", 0);
+            PlayerPrefs.Save();
+
+        #else
         this.gameData = new GameData();
+        #endif
     }
 
     public void LoadGame()
     {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            GameData loadedData = new GameData();
+            string webGLDataKey = "escapeTheDungeonSaveData1";
+            loadedData.playerHealth = PlayerPrefs.GetFloat(webGLDataKey + "Health");
+            loadedData.playerMaxHealth = PlayerPrefs.GetFloat(webGLDataKey + "MaxHealth");
+            loadedData.playerEnergy = PlayerPrefs.GetFloat(webGLDataKey + "Energy");
+            loadedData.playerMaxEnergy = PlayerPrefs.GetFloat(webGLDataKey + "MaxEnergy");
+            loadedData.playerStr = PlayerPrefs.GetFloat(webGLDataKey + "Str");
+            loadedData.playerDex = PlayerPrefs.GetFloat(webGLDataKey + "Dex");
+            loadedData.playerMagic = PlayerPrefs.GetFloat(webGLDataKey + "Magic");
+            loadedData.playerDamageReduction = PlayerPrefs.GetInt(webGLDataKey + "DamageReduction");
+            loadedData.playerDodgeChance = PlayerPrefs.GetInt(webGLDataKey + "DodgeChance");
+            loadedData.playerCritChance = PlayerPrefs.GetInt(webGLDataKey + "CritChance");
+            loadedData.gold = PlayerPrefs.GetInt(webGLDataKey + "Gold");
+            loadedData.playerHPPotions = PlayerPrefs.GetInt(webGLDataKey + "HPPotions");
+            loadedData.currentAct = PlayerPrefs.GetInt(webGLDataKey + "CurrentAct");
+            loadedData.crystals = PlayerPrefs.GetFloat(webGLDataKey + "Crystals");
+            loadedData.strUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "StrUpgradeLevel");
+            loadedData.dexUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "DexUpgradeLevel");
+            loadedData.magUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "MagUpgradeLevel");
+            loadedData.drUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "DrUpgradeLevel");
+            loadedData.crystalUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "CrystalUpgradeLevel");
+            loadedData.goldUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "GoldUpgradeLevel");
+            loadedData.potionUpgradeLevel = PlayerPrefs.GetInt(webGLDataKey + "PotionUpgradeLevel");
+            this.gameData = loadedData;
+            foreach (IDataPersistance dataPersistanceObj in dataPersistanceObjects)
+            {
+                dataPersistanceObj.LoadData(gameData);
+                Debug.Log("Loaded data to: " + dataPersistanceObj.ToString());
+            }
+        #else
         // Load save data from file.
         this.gameData = dataHandler.Load();
+        Debug.Log("Loaded " + gameData.crystals + " crystals.");
         // No data = New game.
         if (this.gameData == null)
         {
@@ -63,6 +123,7 @@ public class DataPersistanceManager : MonoBehaviour
             dataPersistanceObj.LoadData(gameData);
             Debug.Log("Loaded data to: " + dataPersistanceObj.ToString());
         }
+        #endif
     }
 
     public void SaveGame()
