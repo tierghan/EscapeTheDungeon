@@ -332,7 +332,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         this.gold = PlayerPrefs.GetInt("gold", 0);
         this.playerHPPotions = PlayerPrefs.GetInt("playerHPPotions", 0);
         this.currentAct = PlayerPrefs.GetInt("currentAct", 1);
-        this.crystals = PlayerPrefs.GetFloat("crystals", 10000000000000000f);
+        this.crystals = PlayerPrefs.GetFloat("crystals", 0f);
         this.strUpgradeLevel = PlayerPrefs.GetInt("strUpgradeLevel", 0);
         this.dexUpgradeLevel = PlayerPrefs.GetInt("dexUpgradeLevel", 0);
         this.magUpgradeLevel = PlayerPrefs.GetInt("magUpgradeLevel", 0);
