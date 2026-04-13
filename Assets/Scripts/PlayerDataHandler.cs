@@ -5,16 +5,15 @@ using TMPro;
 
 public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 {
-    #if UNITY_WEBGL && !UNITY_EDITOR
-        private string webGLDataKey = "escapeTheDungeonSaveData1";
-
-        
-    #endif
     GameObject combatManager, eventManager;
     [SerializeField] 
     TMP_Text gameOverText;
     [SerializeField]
     GameObject gameOverWindow;
+    #if UNITY_WEBGL && !UNITY_EDITOR
+    bool autoSave;
+    float autoSaveTimer;
+    #endif
     private float playerHealth,playerEnergy;
     private float playerStr,playerDex,playerMagic,playerMaxHealth, playerMaxEnergy, crystals;
 
@@ -85,6 +84,10 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         goldUpgradeLevel = levels[5];
         potionUpgradeLevel = levels[6];
         maxHPUpgradeLevel = levels[7];
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        SaveDataPlayerPrefs();
+        #else
+        #endif
     }
 
     public void SetCrystals(int amount)
@@ -113,30 +116,18 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         playerDodgeChance = Mathf.Clamp((int)playerDex, 0, 100);
         playerCritChance = Mathf.Clamp((int)playerDex, 0, 100);
         #if UNITY_WEBGL && !UNITY_EDITOR
-        PlayerPrefs.SetFloat(webGLDataKey + "Health", playerHealth);
-        PlayerPrefs.SetFloat(webGLDataKey + "MaxHealth", playerMaxHealth);
-        PlayerPrefs.SetFloat(webGLDataKey + "Energy", playerEnergy);
-        PlayerPrefs.SetFloat(webGLDataKey + "MaxEnergy", playerMaxEnergy);
-        PlayerPrefs.SetFloat(webGLDataKey + "Str", playerStr);
-        PlayerPrefs.SetFloat(webGLDataKey + "Dex", playerDex);
-        PlayerPrefs.SetFloat(webGLDataKey + "Magic", playerMagic);
-        PlayerPrefs.SetInt(webGLDataKey + "DamageReduction", playerDamageReduction);
-        PlayerPrefs.SetInt(webGLDataKey + "DodgeChance", playerDodgeChance);
-        PlayerPrefs.SetInt(webGLDataKey + "CritChance", playerCritChance);
-        PlayerPrefs.SetInt(webGLDataKey + "Gold", gold);
-        PlayerPrefs.SetInt(webGLDataKey + "HPPotions", playerHPPotions);
-        PlayerPrefs.SetInt(webGLDataKey + "CurrentAct", currentAct);
-        PlayerPrefs.SetFloat(webGLDataKey + "Crystals", crystals);
-        PlayerPrefs.SetInt(webGLDataKey + "StrUpgradeLevel", strUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "DexUpgradeLevel", dexUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "MagUpgradeLevel", magUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "DrUpgradeLevel", drUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "CrystalUpgradeLevel", crystalUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "GoldUpgradeLevel", goldUpgradeLevel);
-        PlayerPrefs.SetInt(webGLDataKey + "PotionUpgradeLevel", potionUpgradeLevel);
-        PlayerPrefs.Save();
-    #endif
+        autoSaveTimer += Time.fixedDeltaTime;
+        if (autoSaveTimer >= 5f) // Save every 5 seconds
+        {
+            SaveDataPlayerPrefs();
+            autoSaveTimer = 0f;
+        }
+
+        #endif
     }
+
+    #if UNITY_WEBGL && !UNITY_EDITOR
+    #endif
 
 
     // Deals % based damage to player. Ignores DR and attacker crit chance. Passed int is the % of players max hp to be delt in damage.
@@ -327,7 +318,30 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     
     public void LoadData(GameData data)
     {
-        Debug.Log("Loaded " + data.crystals + " crystals from GameData.");
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        this.playerHealth = PlayerPrefs.GetFloat("playerHealth", 20f);
+        this.playerMaxHealth = PlayerPrefs.GetFloat("playerMaxHealth", 20f);
+        this.playerEnergy = PlayerPrefs.GetFloat("playerEnergy", 10f);
+        this.playerMaxEnergy = PlayerPrefs.GetFloat("playerMaxEnergy", 10f);
+        this.playerStr = PlayerPrefs.GetFloat("playerStr", 10f);
+        this.playerDex = PlayerPrefs.GetFloat("playerDex", 10f);
+        this.playerMagic = PlayerPrefs.GetFloat("playerMagic", 10f);
+        this.playerDamageReduction = PlayerPrefs.GetInt("playerDamageReduction", 0);
+        this.playerDodgeChance = PlayerPrefs.GetInt("playerDodgeChance", 0);
+        this.playerCritChance = PlayerPrefs.GetInt("playerCritChance", 0);
+        this.gold = PlayerPrefs.GetInt("gold", 0);
+        this.playerHPPotions = PlayerPrefs.GetInt("playerHPPotions", 0);
+        this.currentAct = PlayerPrefs.GetInt("currentAct", 1);
+        this.crystals = PlayerPrefs.GetFloat("crystals", 10000000000000000f);
+        this.strUpgradeLevel = PlayerPrefs.GetInt("strUpgradeLevel", 0);
+        this.dexUpgradeLevel = PlayerPrefs.GetInt("dexUpgradeLevel", 0);
+        this.magUpgradeLevel = PlayerPrefs.GetInt("magUpgradeLevel", 0);
+        this.drUpgradeLevel = PlayerPrefs.GetInt("drUpgradeLevel", 0);
+        this.crystalUpgradeLevel = PlayerPrefs.GetInt("crystalUpgradeLevel", 0);
+        this.goldUpgradeLevel = PlayerPrefs.GetInt("goldUpgradeLevel", 0);
+        this.potionUpgradeLevel = PlayerPrefs.GetInt("potionUpgradeLevel", 0);
+        this.maxHPUpgradeLevel = PlayerPrefs.GetInt("maxHPUpgradeLevel", 0);
+        #else
         this.playerHealth = data.playerHealth;
         this.playerMaxHealth = data.playerMaxHealth;
         this.playerEnergy = data.playerEnergy;
@@ -349,14 +363,77 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         this.crystalUpgradeLevel = data.crystalUpgradeLevel;
         this.goldUpgradeLevel = data.goldUpgradeLevel;
         this.potionUpgradeLevel = data.potionUpgradeLevel;
+        this.maxHPUpgradeLevel = data.maxHPUpgradeLevel;
+        #endif
     }
 
     void Start()
     {
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        GameData loadedData = new GameData();
+        loadedData.playerHealth = PlayerPrefs.GetFloat("playerHealth", 20f);
+        loadedData.playerMaxHealth = PlayerPrefs.GetFloat("playerMaxHealth", 20f);
+        loadedData.playerEnergy = PlayerPrefs.GetFloat("playerEnergy", 10f);
+        loadedData.playerMaxEnergy = PlayerPrefs.GetFloat("playerMaxEnergy", 10f);
+        loadedData.playerStr = PlayerPrefs.GetFloat("playerStr", 10f);
+        loadedData.playerDex = PlayerPrefs.GetFloat("playerDex", 10f);
+        loadedData.playerMagic = PlayerPrefs.GetFloat("playerMagic", 10f);
+        loadedData.playerDamageReduction = PlayerPrefs.GetInt("playerDamageReduction", 0);
+        loadedData.playerDodgeChance = PlayerPrefs.GetInt("playerDodgeChance", 0);
+        loadedData.playerCritChance = PlayerPrefs.GetInt("playerCritChance", 0);
+        loadedData.gold = PlayerPrefs.GetInt("gold", 0);
+        loadedData.playerHPPotions = PlayerPrefs.GetInt("playerHPPotions", 0);
+        loadedData.currentAct = PlayerPrefs.GetInt("currentAct", 1);
+        loadedData.crystals = PlayerPrefs.GetFloat("crystals", 0f);
+        loadedData.strUpgradeLevel = PlayerPrefs.GetInt("strUpgradeLevel", 0);
+        loadedData.dexUpgradeLevel = PlayerPrefs.GetInt("dexUpgradeLevel", 0);
+        loadedData.magUpgradeLevel = PlayerPrefs.GetInt("magUpgradeLevel", 0);
+        loadedData.drUpgradeLevel = PlayerPrefs.GetInt("drUpgradeLevel", 0);
+        loadedData.crystalUpgradeLevel = PlayerPrefs.GetInt("crystalUpgradeLevel", 0);
+        loadedData.goldUpgradeLevel = PlayerPrefs.GetInt("goldUpgradeLevel", 0);
+        loadedData.potionUpgradeLevel = PlayerPrefs.GetInt("potionUpgradeLevel", 0);
+        loadedData.maxHPUpgradeLevel = PlayerPrefs.GetInt("maxHPUpgradeLevel", 0);
+
+        LoadData(loadedData);
+        #endif
         combatManager = GameObject.Find("CombatWindow");      
         eventManager = GameObject.Find("EventWindow");  
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        autoSave = true;
+        #else
+        #endif
+
     }
 
+    #if UNITY_WEBGL && !UNITY_EDITOR
+    public void SaveDataPlayerPrefs()
+    {
+        PlayerPrefs.SetFloat("playerHealth", this.playerHealth);
+        PlayerPrefs.SetFloat("playerMaxHealth", this.playerMaxHealth);
+        PlayerPrefs.SetFloat("playerEnergy", this.playerEnergy);
+        PlayerPrefs.SetFloat("playerMaxEnergy", this.playerMaxEnergy);
+        PlayerPrefs.SetFloat("playerStr", this.playerStr);
+        PlayerPrefs.SetFloat("playerDex", this.playerDex);
+        PlayerPrefs.SetFloat("playerMagic", this.playerMagic);
+        PlayerPrefs.SetInt("playerDamageReduction", this.playerDamageReduction);
+        PlayerPrefs.SetInt("playerDodgeChance", this.playerDodgeChance);
+        PlayerPrefs.SetInt("playerCritChance", this.playerCritChance);
+        PlayerPrefs.SetInt("gold", this.gold);
+        PlayerPrefs.SetInt("playerHPPotions", this.playerHPPotions);
+        PlayerPrefs.SetInt("currentAct", this.currentAct);
+        PlayerPrefs.SetFloat("crystals", this.crystals);
+        PlayerPrefs.SetInt("strUpgradeLevel", this.strUpgradeLevel);
+        PlayerPrefs.SetInt("dexUpgradeLevel", this.dexUpgradeLevel);
+        PlayerPrefs.SetInt("magUpgradeLevel", this.magUpgradeLevel);
+        PlayerPrefs.SetInt("drUpgradeLevel", this.drUpgradeLevel);
+        PlayerPrefs.SetInt("crystalUpgradeLevel", this.crystalUpgradeLevel);
+        PlayerPrefs.SetInt("goldUpgradeLevel", this.goldUpgradeLevel);
+        PlayerPrefs.SetInt("potionUpgradeLevel", this.potionUpgradeLevel);
+        PlayerPrefs.SetInt("maxHPUpgradeLevel", this.maxHPUpgradeLevel);
+        PlayerPrefs.Save();
+    }   
+    #endif
     public void SaveData(ref GameData data)
     {
         data.playerHealth = this.playerHealth;
@@ -380,7 +457,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
         data.crystalUpgradeLevel = this.crystalUpgradeLevel;
         data.goldUpgradeLevel = this.goldUpgradeLevel;
         data.potionUpgradeLevel = this.potionUpgradeLevel;
+        data.maxHPUpgradeLevel = this.maxHPUpgradeLevel;
+        
     }
-
-    
 }

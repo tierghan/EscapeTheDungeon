@@ -19,6 +19,7 @@ public class DebugToolsScipt : MonoBehaviour
     {
         List<float> stats = player.GetComponent<PlayerDataHandler>().GetStats();
         statText.text = "Str: " + stats[0] + "\nDex: " + stats[1] + "\nMagic: " + stats[2] + "\nHealth: " + stats[3] + "/" + stats[4] + "\nEnergy: " + stats[5] + "/" + stats[6] + "\nDamage Reduction: " + stats[7] + "%\nDodge Chance: " + stats[8] + "%\nCrit Chance: " + stats[9] + "%\nGold: " + stats[10] + "\n " + "Health Potions: " + stats[11] + "\nCurrent Act: " + stats[12] + "\nCrystals: " + stats[13];
+        statText.text += "\nUpgrade Levels:\nStr: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[0] + "\nDex: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[1] + "\nMagic: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[2] + "\nDamage Reduction: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[3] + "\nCrystal Gain: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[4] + "\nGold Gain: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[5] + "\nPotion Gain: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[6] + "\nMax HP Gain: " + player.GetComponent<PlayerDataHandler>().GetUpgradeLevels()[7];
     }
 
     private void EnableDebugTools()

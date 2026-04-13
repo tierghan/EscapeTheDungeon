@@ -38,5 +38,6 @@ public class GameData
         this.crystalUpgradeLevel = 0;
         this.goldUpgradeLevel = 0;
         this.potionUpgradeLevel = 0;
+        this.maxHPUpgradeLevel = 0;
     }
 }
