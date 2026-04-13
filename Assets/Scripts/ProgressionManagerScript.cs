@@ -10,10 +10,10 @@ public class ProgressionManagerScript : MonoBehaviour
     List<GameObject>  generalEvents;
 
     [SerializeField] 
-    GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager, ProgressionPanel, gameOverWindow;
+    GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager, ProgressionPanel, gameOverWindow, shopManager, restManager, detourManager, trainingManager;
 
     [SerializeField]
-    GameObject combat1, combat2, combat3, event1, event2, event3;
+    GameObject combat1, combat2, combat3, event1, event2, event3, train1, train2, train3, rest1, rest2, rest3, shop1, shop2, shop3, detour1, detour2, detour3;
 
     GameObject player, bossEvent;
     [SerializeField]
@@ -75,10 +75,10 @@ public class ProgressionManagerScript : MonoBehaviour
         //Manually comment out entries to disable player encountering them for testing or what not.
         eventCatagories.Add("Combat");
         eventCatagories.Add("Event");
-        // eventCatagories.Add("Shop");
-        // eventCatagories.Add("Rest");
-        // eventCatagories.Add("Detour");
-        // eventCatagories.Add("Training");
+        eventCatagories.Add("Shop");
+        eventCatagories.Add("Rest");
+        eventCatagories.Add("Detour");
+        eventCatagories.Add("Training");
         for (int i = 0; i < 3; i++)
         {
             int rand = Random.Range(0, eventCatagories.Count);
@@ -96,6 +96,22 @@ public class ProgressionManagerScript : MonoBehaviour
                     {
                         currentEvent = event1;
                     }
+                    else if (catagory == "Shop")
+                    {
+                        currentEvent = shop1;
+                    }
+                     else if (catagory == "Rest")
+                    {
+                        currentEvent = rest1;
+                    }
+                     else if (catagory == "Detour")
+                    {
+                        currentEvent = detour1;
+                    }
+                     else if (catagory == "Training")
+                    {
+                        currentEvent = train1;
+                    }
                     break;
                 case 1:
                     if (catagory == "Combat")
@@ -106,6 +122,22 @@ public class ProgressionManagerScript : MonoBehaviour
                     {
                         currentEvent = event2;
                     }
+                    else if (catagory == "Shop")
+                    {
+                        currentEvent = shop2;
+                    }
+                     else if (catagory == "Rest")
+                    {
+                        currentEvent = rest2;
+                    }
+                     else if (catagory == "Detour")
+                    {
+                        currentEvent = detour2;
+                    }
+                     else if (catagory == "Training")
+                    {
+                        currentEvent = train2;
+                    }
                     break;
                 case 2:
                     if (catagory == "Combat")
@@ -115,6 +147,22 @@ public class ProgressionManagerScript : MonoBehaviour
                     else if (catagory == "Event")
                     {
                         currentEvent = event3;
+                    }
+                    else if (catagory == "Shop")
+                    {
+                        currentEvent = shop3;
+                    }
+                     else if (catagory == "Rest")
+                    {
+                        currentEvent = rest3;
+                    }
+                     else if (catagory == "Detour")
+                    {
+                        currentEvent = detour3;
+                    }
+                     else if (catagory == "Training")
+                    {
+                        currentEvent = train3;
                     }
                     break;
                 default:
@@ -170,6 +218,15 @@ public class ProgressionManagerScript : MonoBehaviour
         actProgress++;
     }
 
+    public void DecrementActProgression()
+    {
+        actProgress--;
+        if (actProgress < 1)
+        {
+            actProgress = 1;
+        }
+    }
+
     public void IncrementAct()
     {
         currentAct++;
@@ -188,6 +245,34 @@ public class ProgressionManagerScript : MonoBehaviour
     public void ExploreChoiceEvent()
     {
         eventManager.GetComponent<EventCardSystemScript>().ShowEventWindow();
+        HideChoices();
+        IncrementActProgression();
+    }
+
+    public void ExploreChoiceShop()
+    {
+        shopManager.GetComponent<ShopManagerScript>().ShowShop();
+        HideChoices();
+        IncrementActProgression();
+    }
+
+    public void ExploreChoiceRest()
+    {
+        restManager.GetComponent<RestManagerScript>().ShowRest();
+        HideChoices();
+        IncrementActProgression();
+    }
+
+    public void ExploreChoiceDetour()
+    {
+        detourManager.GetComponent<DetourManagerScript>().ShowDetour();
+        HideChoices();
+        IncrementActProgression();
+    }
+
+    public void ExploreChoiceTraining()
+    {
+        trainingManager.GetComponent<TrainingManagerScript>().ShowTraining();
         HideChoices();
         IncrementActProgression();
     }
