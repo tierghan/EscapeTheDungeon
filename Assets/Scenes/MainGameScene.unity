@@ -25687,7 +25687,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1021079808}
   m_Direction: 2
   m_Value: 0.000000028868968
-  m_Size: 0.10500649
+  m_Size: 0.104840465
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -38170,8 +38170,8 @@ MonoBehaviour:
   gameOverWindow: {fileID: 613995494}
   shopManager: {fileID: 1760981044}
   restManager: {fileID: 1717455889}
-  detourManager: {fileID: 0}
-  trainingManager: {fileID: 0}
+  detourManager: {fileID: 372317650}
+  trainingManager: {fileID: 170751001}
   combat1: {fileID: 1983461907459724690}
   combat2: {fileID: 824338627}
   combat3: {fileID: 1830807948}
