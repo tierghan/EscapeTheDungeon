@@ -299,7 +299,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 
     public void SetGameOverPlayerData()
     {
-        playerHealth = 20f;
+        playerHealth = 20f + (maxHPUpgradeLevel * 5);
         playerMaxHealth = 20f + (maxHPUpgradeLevel * 5);
         playerEnergy = 10f;
         playerMaxEnergy = 10f;
