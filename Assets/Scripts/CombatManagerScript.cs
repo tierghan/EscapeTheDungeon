@@ -9,7 +9,7 @@ public class CombatManagerScript : MonoBehaviour
 {
     GameObject enemyPanel, optionPanel, player;
     [SerializeField]
-    GameObject combatUIParent, progressionPanel;
+    GameObject combatUIParent, progressionPanel, enemyIconObject;
     [SerializeField]
     TMP_Text enemyNameText, combatLogText, playerStatsText, enemyStatsText;
     [SerializeField]
@@ -46,6 +46,15 @@ public class CombatManagerScript : MonoBehaviour
         GenerateEnemy((int)playerStats[12]);
         playerData.FillEnergy();
         enemyName = currentEnemy.enemyName;
+        try
+        {
+            enemyIconObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + enemyName + "Icon");
+            enemyIconObject.GetComponent<Image>().type = Image.Type.Filled;
+        }
+        catch
+        {
+            Debug.LogWarning("Enemy icon not found for " + enemyName);
+        }
         turnCounter = 0;
         combatLogOutput = "A wild " + enemyName + " appears!";
         UpdateHealthBars();
@@ -475,6 +484,15 @@ public class CombatManagerScript : MonoBehaviour
         GenerateEnemy(currentAct);
         playerData.FillEnergy();
         enemyName = currentEnemy.enemyName;
+        try
+        {
+            enemyIconObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + enemyName + "Icon");
+            enemyIconObject.GetComponent<Image>().type = Image.Type.Filled;
+        }
+        catch
+        {
+            Debug.LogWarning("Enemy icon not found for " + enemyName);
+        }
         turnCounter = 0;
         combatLogOutput = "Boss Fight! The " + enemyName + " stands before you!";
         UpdateHealthBars();
