@@ -76,6 +76,21 @@ public class ShopManagerScript : MonoBehaviour
 
     }
 
+    public void BuyPotion()
+    {
+        int playerGold = getPlayerGold();
+        if (playerGold >= 50)
+        {
+            player.GetComponent<PlayerDataHandler>().AddStat(11, 1);
+            player.GetComponent<PlayerDataHandler>().AddStat(10, -50);
+        }
+        else
+        {
+            Debug.Log("Not enough gold to purchase potion.");
+        }
+        updateText();
+    }
+
     public void LeaveShop()
     {
         HideShop();
