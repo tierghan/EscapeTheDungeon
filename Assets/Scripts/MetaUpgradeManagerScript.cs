@@ -7,9 +7,12 @@ public class MetaUpgradeManagerScript : MonoBehaviour
 {
     [SerializeField]
     GameObject upgradeWindow, player;
+    [SerializeField]
+    AudioManagerScript audioManager;
     int playerCrystals = 0;
     int strUpgradeMaxLevel = 20, dexUpgradeMaxLevel = 20, magUpgradeMaxLevel = 20, drUpgradeMaxLevel = 10, crystalUpgradeMaxLevel = 1, goldUpgradeMaxLevel = 1, potionUpgradeMaxLevel = 3, maxHPUpgradeMaxLevel = 10;
     List<int> upgradeLevels;
+    bool windowClosed = false;
 
     [SerializeField]
     TMP_Text strNameText, dexNameText, magNameText, drNameText, crystalGainNameText, goldGainNameText, potionGainNameText, maxHPGainNameText, crystalAmountText;
@@ -23,6 +26,7 @@ public class MetaUpgradeManagerScript : MonoBehaviour
     }
     public void CloseUpgradeWindow()
     {
+        if (windowClosed) audioManager.PlaySFXClick();
         upgradeWindow.SetActive(false);
         UpdatePlayerCrystals();
         UpdatePlayerUpgradeLevels();
@@ -64,6 +68,7 @@ public class MetaUpgradeManagerScript : MonoBehaviour
     void Start()
     {
         CloseUpgradeWindow();
+        windowClosed = true;
         GetPlayerCrystals();
         GetPlayerUpgradeLevels();
     }
@@ -89,10 +94,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[0]++;
                     playerCrystals -= 5;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //DEX
@@ -101,10 +107,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[1]++;
                     playerCrystals -= 5;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //MAG
@@ -113,10 +120,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[2]++;
                     playerCrystals -= 5;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //DR
@@ -125,10 +133,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[3]++;
                     playerCrystals -= 10;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
              //Crystal Gain
@@ -137,10 +146,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[4]++;
                     playerCrystals -= 30;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //Gold Gain
@@ -149,10 +159,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[5]++;
                     playerCrystals -= 20;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //Health Potion Gain
@@ -161,10 +172,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[6]++;
                     playerCrystals -= 15;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             //Max Health Gain
@@ -173,10 +185,11 @@ public class MetaUpgradeManagerScript : MonoBehaviour
                 {
                     upgradeLevels[7]++;
                     playerCrystals -= 5;
+                    audioManager.PlaySFXBuy();
                 }
                 else
                 {
-                    //TODO- Denied sfx
+                    audioManager.PlaySFXClick();
                 }
                 break;
             default:

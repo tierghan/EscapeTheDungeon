@@ -9,6 +9,9 @@ public class ShopManagerScript : MonoBehaviour
     GameObject player, progressionManager;
     [SerializeField]
     TMP_Text goldText;
+    [SerializeField]
+    AudioManagerScript audioManager;
+
     public void ShowShop()
     {
         gameObject.SetActive(true);
@@ -38,6 +41,7 @@ public class ShopManagerScript : MonoBehaviour
     public void BuyStatIncrease(int statIndex)
     {
         int playerGold = getPlayerGold();
+        bool purchased = true;
         if (playerGold >= 100 && statIndex <= 2)
         {
             player.GetComponent<PlayerDataHandler>().AddStat(statIndex, 1);
@@ -55,14 +59,26 @@ public class ShopManagerScript : MonoBehaviour
         }
         else
         {
+            purchased = false;
             Debug.Log("Not enough gold to purchase stat increase or invalid stat index.");
         }
+
+        if (purchased)
+        {
+            audioManager.PlaySFXBuy();
+        }
+        else
+        {
+            audioManager.PlaySFXClick();
+        }
+
         updateText();
     }
 
     public void BuyHealing()
     {
         int playerGold = getPlayerGold();
+        bool purchased = true;
         if (playerGold >= 50)
         {
             player.GetComponent<PlayerDataHandler>().HealPercentage(30);
@@ -70,7 +86,17 @@ public class ShopManagerScript : MonoBehaviour
         }
         else
         {
+            purchased = false;
             Debug.Log("Not enough gold to purchase healing.");
+        }
+
+        if (purchased)
+        {
+            audioManager.PlaySFXBuy();
+        }
+        else
+        {
+            audioManager.PlaySFXClick();
         }
         updateText();
 
@@ -79,6 +105,7 @@ public class ShopManagerScript : MonoBehaviour
     public void BuyPotion()
     {
         int playerGold = getPlayerGold();
+        bool purchased = true;
         if (playerGold >= 50)
         {
             player.GetComponent<PlayerDataHandler>().AddStat(11, 1);
@@ -86,13 +113,24 @@ public class ShopManagerScript : MonoBehaviour
         }
         else
         {
+            purchased = false;
             Debug.Log("Not enough gold to purchase potion.");
+        }
+
+        if (purchased)
+        {
+            audioManager.PlaySFXBuy();
+        }
+        else
+        {
+            audioManager.PlaySFXClick();
         }
         updateText();
     }
 
     public void LeaveShop()
     {
+        audioManager.PlaySFXClick();
         HideShop();
         progressionManager.GetComponent<ProgressionManagerScript>().NewExplore();
     }

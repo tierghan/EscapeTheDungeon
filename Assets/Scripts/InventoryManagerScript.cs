@@ -7,6 +7,7 @@ public class InventoryManagerScript : MonoBehaviour//,  IDataPersistance
 {
     GameObject player, combatManager;
     [SerializeField] private TextMeshProUGUI consumableText;
+    [SerializeField] private AudioManagerScript audioManager;
 
     // List<string> inventory = new List<string>();
 
@@ -37,6 +38,7 @@ public class InventoryManagerScript : MonoBehaviour//,  IDataPersistance
     public void UsePotion()
     {
         int currentPotions = player.GetComponent<PlayerDataHandler>().GetHealthPotions();
+        audioManager.PlaySFXClick();
         if (currentPotions > 0)
         {
             player.GetComponent<PlayerDataHandler>().HealPercentage(30);

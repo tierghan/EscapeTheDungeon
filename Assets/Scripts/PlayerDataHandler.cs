@@ -10,6 +10,8 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     TMP_Text gameOverText;
     [SerializeField]
     GameObject gameOverWindow;
+    [SerializeField]
+    AudioManagerScript audioManager;
     #if UNITY_WEBGL && !UNITY_EDITOR
     bool autoSave;
     float autoSaveTimer;
@@ -145,6 +147,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
     // Heals player based on the passed int as a % against player max hp.
     public void HealPercentage(int healAmount)
     {
+        audioManager.PlaySFXHeal();
         playerHealth += (int)(playerMaxHealth * (healAmount / 100f));
         if (playerHealth > playerMaxHealth)
         {
@@ -255,6 +258,10 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
                 Debug.Log("Invalid stat index.");
                 break;
         }
+        if (stat <= 9 && amount > 0 && stat != 3 && stat != 5)
+        {
+            audioManager.PlaySFXStatUp();
+        }
     }
 
     public void AddRandomStat(int multiplier)
@@ -290,6 +297,7 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 
     void GameOver()
     {
+        audioManager.PlaySFXGameOver();
         SetGameOverPlayerData();
         combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
         eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();

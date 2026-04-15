@@ -7,14 +7,21 @@ public class CombatInfoScript : MonoBehaviour
     [SerializeField]
     GameObject combatPanel;
 
+    [SerializeField]
+    AudioManagerScript audioManager;
+
+    bool combatInfoClosed = false;
+
     public void EnableCombatInfo()
     {
         combatPanel.SetActive(true);
+        audioManager.PlaySFXClick();
     }
 
     public void DisableCombatInfo()
     {
         combatPanel.SetActive(false);
+        if (combatInfoClosed == true) audioManager.PlaySFXClick();
     }
 
     public void ToggleCombatInfo()
@@ -31,6 +38,7 @@ public class CombatInfoScript : MonoBehaviour
 
     private void Start() 
     {
-        DisableCombatInfo();    
+        DisableCombatInfo();
+        combatInfoClosed = true;    
     }
 }

@@ -10,21 +10,29 @@ public class StatsScreenScript : MonoBehaviour
     [SerializeField]
     TMP_Text statsTextLeft, statsTextRight;
 
+    [SerializeField]
+    AudioManagerScript audioManager;
+
+    bool statsPanelClosed = false;
     List<float> playerStats;
 
      void Start()
     {
         CloseStatsPanel();
+        statsPanelClosed = true;
+
     }
 
     public void OpenStatsPanel()
     {
         statsPanel.SetActive(true);
+        audioManager.PlaySFXClick();
         UpdateStatsText();
     }
     public void CloseStatsPanel()
     {
         statsPanel.SetActive(false);
+        if (statsPanelClosed == true) audioManager.PlaySFXClick();
     }
 
     public void ToggleStatsPanel()

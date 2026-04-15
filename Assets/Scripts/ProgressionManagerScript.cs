@@ -19,6 +19,9 @@ public class ProgressionManagerScript : MonoBehaviour
     [SerializeField]
     TMP_Text actProgressText;
 
+    [SerializeField]
+    AudioManagerScript audioManager;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -40,6 +43,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void NewRun()
     {
+        audioManager.PlayBackgroundMusic();
         currentAct = 1;
         actProgress = 1;
         combatManager.GetComponent<CombatManagerScript>().DisableCombatUI();
@@ -196,6 +200,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void BossChoice()
     {
+        audioManager.PlaySFXClick();
         combatManager.GetComponent<CombatManagerScript>().StartBossCombat(currentAct*-1);
         combatManager.GetComponent<CombatManagerScript>().EnableCombatUI();
         HideChoices();
@@ -236,6 +241,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceCombat()
     {
+        audioManager.PlaySFXClick();
         combatManager.GetComponent<CombatManagerScript>().StartCombat();
         combatManager.GetComponent<CombatManagerScript>().EnableCombatUI();
         HideChoices();
@@ -244,6 +250,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceEvent()
     {
+        audioManager.PlaySFXClick();
         eventManager.GetComponent<EventCardSystemScript>().ShowEventWindow();
         HideChoices();
         IncrementActProgression();
@@ -251,6 +258,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceShop()
     {
+        audioManager.PlaySFXClick();
         shopManager.GetComponent<ShopManagerScript>().ShowShop();
         HideChoices();
         IncrementActProgression();
@@ -258,6 +266,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceRest()
     {
+        audioManager.PlaySFXClick();
         restManager.GetComponent<RestManagerScript>().ShowRest();
         HideChoices();
         IncrementActProgression();
@@ -265,6 +274,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceDetour()
     {
+        audioManager.PlaySFXClick();
         detourManager.GetComponent<DetourManagerScript>().ShowDetour();
         HideChoices();
         IncrementActProgression();
@@ -272,6 +282,7 @@ public class ProgressionManagerScript : MonoBehaviour
 
     public void ExploreChoiceTraining()
     {
+        audioManager.PlaySFXClick();
         trainingManager.GetComponent<TrainingManagerScript>().ShowTraining();
         HideChoices();
         IncrementActProgression();

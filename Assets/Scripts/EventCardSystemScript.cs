@@ -9,6 +9,8 @@ public class EventCardSystemScript : MonoBehaviour
     TMP_Text option1Text, option2Text, option3Text, option4Text, titleText, descriptionText;
     [SerializeField]
     GameObject eventPanel,continueButton;
+    [SerializeField]
+    AudioManagerScript audioManager;
     GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, titleObject, descriptionObject;
     int randomStat;
     List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
@@ -279,6 +281,7 @@ public class EventCardSystemScript : MonoBehaviour
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
         }
+        audioManager.PlaySFXClick();
     }
     public void Option2Selected()
     {
@@ -326,6 +329,7 @@ public class EventCardSystemScript : MonoBehaviour
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
         }
+        audioManager.PlaySFXClick();
     }
 
     public void Option3Selected()
@@ -349,6 +353,8 @@ public class EventCardSystemScript : MonoBehaviour
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
         }
+        audioManager.PlaySFXClick();
+
     }
 
     public void Option4Selected()
@@ -366,6 +372,7 @@ public class EventCardSystemScript : MonoBehaviour
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
         }
+        audioManager.PlaySFXClick();
     }
 
 }

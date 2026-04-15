@@ -14,6 +14,8 @@ public class CombatManagerScript : MonoBehaviour
     TMP_Text enemyNameText, combatLogText, playerStatsText, enemyStatsText;
     [SerializeField]
     public Slider playerHealthBar, enemyHealthBar;
+    [SerializeField]
+    AudioManagerScript audioManager;
     PlayerDataHandler playerData;
     EnemyTemplate currentEnemy;
     float enemyHealth, enemyStr, enemyDex, enemyMagic, enemyDodgeChance, enemyCritChance, enemyDamageReduction;
@@ -27,7 +29,7 @@ public class CombatManagerScript : MonoBehaviour
 
     void Start()
     {
-
+        
         enemyPanel = GameObject.Find("EnemyPanel");
         optionPanel = GameObject.Find("CombatOptionPanel");
         act1Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Normal"));
@@ -87,6 +89,8 @@ public class CombatManagerScript : MonoBehaviour
             combatLogOutput += "You defeated " + enemyName + "! You earned " + combatRewardGold + " gold and " + combatRewardCrystals + " crystals.";
             playerData.AddStat(10, combatRewardGold);
             playerData.AddStat(13, combatRewardCrystals);
+            audioManager.PlaySFXEnemyDeath();
+
         }
         PrintCombatLogLine();
         DisableCombatUI();
@@ -319,6 +323,7 @@ public class CombatManagerScript : MonoBehaviour
                     combatLogOutput += "CRITICAL HIT.";
                 }
                 enemyHealth -= damage;
+                audioManager.PlaySFXPlayer("Melee");
                 UpdateHealthBars();
                 allowPlayerInput = false;
                 PrintCombatLogLine();
@@ -353,6 +358,7 @@ public class CombatManagerScript : MonoBehaviour
                     }
                 }
                 enemyHealth -= damage;
+                audioManager.PlaySFXPlayer("Magic");
                 UpdateHealthBars();
                 allowPlayerInput = false;
                 PrintCombatLogLine();
@@ -378,6 +384,7 @@ public class CombatManagerScript : MonoBehaviour
                 combatLogOutput += "You ready yourself to dodge. ";
                 playerDodging = true;
                 allowPlayerInput = false;
+                audioManager.PlaySFXPlayer("Dodge");
                 PrintCombatLogLine();
                 EnemyTurn();
             }
@@ -394,6 +401,7 @@ public class CombatManagerScript : MonoBehaviour
                 playerDefending = true;
                 allowPlayerInput = false;
                 playerData.AddStat(5, 0);
+                audioManager.PlaySFXPlayer("Block");
                 PrintCombatLogLine();
                 EnemyTurn();
             }
@@ -406,7 +414,7 @@ public class CombatManagerScript : MonoBehaviour
     {
         if (allowPlayerInput == true)
         {
-            
+            audioManager.PlaySFXClick();
             playerFleeing = true;
             allowPlayerInput = false;
             combatLogOutput += "You flee from the fight. ";
