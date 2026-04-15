@@ -262,9 +262,7 @@ public class EventCardSystemScript : MonoBehaviour
                     else if (randomStat == 5)
                     {
                         player.GetComponent<PlayerDataHandler>().AddStat(7, 5f);
-                    }
-                    
-                    player.GetComponent<PlayerDataHandler>().AddStat(randomStat, 5f);
+                    }    
                 }
                 hideOptions();
                 break;
