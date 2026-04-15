@@ -8666,6 +8666,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1573002023}
+        m_TargetAssemblyTypeName: AudioManagerScript, Assembly-CSharp
+        m_MethodName: PlaySFXClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &456332474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8737,7 +8749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1585.6602}
+  m_AnchoredPosition: {x: 0, y: 1585.6599}
   m_SizeDelta: {x: 0, y: 1771.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &497054533
@@ -13958,6 +13970,7 @@ Transform:
   - {fileID: 1713412885}
   - {fileID: 1609166545}
   - {fileID: 2042755808}
+  - {fileID: 1947156460}
   m_Father: {fileID: 1573002024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &737589213
@@ -26284,8 +26297,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1021079809}
   m_HandleRect: {fileID: 1021079808}
   m_Direction: 2
-  m_Value: -0.00000012509886
-  m_Size: 0.10499694
+  m_Value: 0.000000105852884
+  m_Size: 0.104947604
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -30466,6 +30479,7 @@ MonoBehaviour:
   statUpSFXSource: {fileID: 1713412886}
   playerSFXSource: {fileID: 1609166546}
   buySFXSource: {fileID: 2042755807}
+  deadWaves: {fileID: 1947156461}
   clickSFX: {fileID: 8300000, guid: f9ec51bf2b51a544aacf16a7824b8a47, type: 3}
   healSFX: {fileID: 8300000, guid: d5a30223eec95ac4abbb675164a4d40d, type: 3}
   statUpSFX: {fileID: 8300000, guid: 510012d6169bac34da4dc8c167f7f689, type: 3}
@@ -30476,8 +30490,8 @@ MonoBehaviour:
   buySFX: {fileID: 8300000, guid: f59173bd10b637b47a2080d457be6ac2, type: 3}
   mainMenuBackground: {fileID: 8300000, guid: 43673027a17d6244eaa9054cdbe96a19, type: 3}
   mainGameBackground: {fileID: 8300000, guid: 43673027a17d6244eaa9054cdbe96a19, type: 3}
-  gameOverClip: {fileID: 0}
-  enemyDeathClip: {fileID: 0}
+  gameOverClip: {fileID: 8300000, guid: 241aa09b36540d849948bb3e4a094cc4, type: 3}
+  enemyDeathClip: {fileID: 8300000, guid: 3aa128b8d4a713a48bc502c5ba4e4cf9, type: 3}
 --- !u!4 &1573002024
 Transform:
   m_ObjectHideFlags: 0
@@ -38769,6 +38783,134 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1947156459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1947156460}
+  - component: {fileID: 1947156461}
+  m_Layer: 0
+  m_Name: DeathWaves
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1947156460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947156459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 736046652}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1947156461
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947156459}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6f1fad95be9d91a4e9b66108cf403171, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1949922047
 GameObject:
   m_ObjectHideFlags: 0
