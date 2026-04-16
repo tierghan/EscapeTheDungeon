@@ -30,6 +30,8 @@ public class AudioManagerScript : MonoBehaviour
             // Play Main Game Music
             backgroundMusicSource.clip = mainGameBackground;
         }
+        deadWaves.Stop();
+        isDead = false;
         backgroundMusicSource.Play();
     }
 

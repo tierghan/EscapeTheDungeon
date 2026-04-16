@@ -47,7 +47,7 @@ public class ShopManagerScript : MonoBehaviour
             player.GetComponent<PlayerDataHandler>().AddStat(statIndex, 1);
             player.GetComponent<PlayerDataHandler>().AddStat(10, -100);
         }
-        else if(playerGold >= 150 && statIndex == 4 || statIndex == 6)
+        else if((playerGold >= 150 && statIndex == 4) || (playerGold >= 150 && statIndex == 6))
         {
             player.GetComponent<PlayerDataHandler>().AddStat(statIndex, 5);
             player.GetComponent<PlayerDataHandler>().AddStat(10, -150);
