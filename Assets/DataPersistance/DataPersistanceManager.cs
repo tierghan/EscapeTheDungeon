@@ -45,29 +45,28 @@ public class DataPersistanceManager : MonoBehaviour
     public void NewGame()
     {
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string webGLDataKey = "escapeTheDungeonSaveData1";
 
-            PlayerPrefs.SetFloat(webGLDataKey + "Health", 20);
-            PlayerPrefs.SetFloat(webGLDataKey + "MaxHealth", 20);
-            PlayerPrefs.SetFloat(webGLDataKey + "Energy", 10);
-            PlayerPrefs.SetFloat(webGLDataKey + "MaxEnergy", 10);
-            PlayerPrefs.SetFloat(webGLDataKey + "Str", 10);
-            PlayerPrefs.SetFloat(webGLDataKey + "Dex", 10);
-            PlayerPrefs.SetFloat(webGLDataKey + "Magic", 10);
-            PlayerPrefs.SetInt(webGLDataKey + "DamageReduction", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "DodgeChance", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "CritChance", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "Gold", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "HPPotions", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "CurrentAct", 1);
-            PlayerPrefs.SetFloat(webGLDataKey + "Crystals", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "StrUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "DexUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "MagUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "DrUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "CrystalUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "GoldUpgradeLevel", 0);
-            PlayerPrefs.SetInt(webGLDataKey + "PotionUpgradeLevel", 0);
+            PlayerPrefs.SetFloat("playerHealth", 20);
+            PlayerPrefs.SetFloat("playerMaxHealth", 20);
+            PlayerPrefs.SetFloat("playerEnergy", 10);
+            PlayerPrefs.SetFloat("playerMaxEnergy", 10);
+            PlayerPrefs.SetFloat("playerStr", 10);
+            PlayerPrefs.SetFloat("playerDex", 10);
+            PlayerPrefs.SetFloat("playerMagic", 10);
+            PlayerPrefs.SetInt("playerDamageReduction", 0);
+            PlayerPrefs.SetInt("playerDodgeChance", 0);
+            PlayerPrefs.SetInt("playerCritChance", 0);
+            PlayerPrefs.SetInt("gold", 0);
+            PlayerPrefs.SetInt("playerHPPotions", 0);
+            PlayerPrefs.SetInt("currentAct", 1);
+            PlayerPrefs.SetFloat("crystals", 0);
+            PlayerPrefs.SetInt("strUpgradeLevel", 0);
+            PlayerPrefs.SetInt("dexUpgradeLevel", 0);
+            PlayerPrefs.SetInt("magUpgradeLevel", 0);
+            PlayerPrefs.SetInt("drUpgradeLevel", 0);
+            PlayerPrefs.SetInt("crystalUpgradeLevel", 0);
+            PlayerPrefs.SetInt("goldUpgradeLevel", 0);
+            PlayerPrefs.SetInt("potionUpgradeLevel", 0);
             PlayerPrefs.Save();
 
         #else

@@ -9,7 +9,7 @@ public class MainMenuDataViewScript : MonoBehaviour
     GameObject player;
     GameObject dataPersistanceManager;
 
-    float crystals;
+    float crystals, act;
     List<float> playerStats = new List<float>();
 
 
@@ -17,19 +17,19 @@ public class MainMenuDataViewScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        dataPersistanceManager = GameObject.Find("DataPersistanceManager");
-        
-        // dataPersistanceManager.GetComponent<DataPersistanceManager>().LoadGame();
-        
-        playerStats = player.GetComponent<PlayerDataHandler>().GetStats();
-        
-
+        dataPersistanceManager = GameObject.Find("DataPersistanceManager");  
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        playerStats = player.GetComponent<PlayerDataHandler>().GetStats();
         crystals = playerStats[13];
-        text.text = "Crystals: " + crystals.ToString();
+        act = (int)playerStats[12];
+        text.text = "Current Save:\n\nCrystals: " + crystals.ToString() + "\nAct: " + act.ToString();
     }
 }
