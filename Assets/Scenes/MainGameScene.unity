@@ -12253,7 +12253,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 19.86}
+  m_AnchoredPosition: {x: 0, y: 19.860016}
   m_SizeDelta: {x: -70, y: -79.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &619181042
@@ -26511,7 +26511,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1021079808}
   m_Direction: 2
   m_Value: -0.00000012509886
-  m_Size: 0.10500649
+  m_Size: 0.10500531
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -39958,9 +39958,9 @@ MonoBehaviour:
   detour1: {fileID: 312291238}
   detour2: {fileID: 196349300}
   detour3: {fileID: 1027946862}
-  victoryWindow: {fileID: 0}
+  victoryWindow: {fileID: 619181040}
   actProgressText: {fileID: 322504577}
-  victoryText: {fileID: 0}
+  victoryText: {fileID: 1475150728}
   audioManager: {fileID: 1573002023}
 --- !u!1 &1969831079
 GameObject:
