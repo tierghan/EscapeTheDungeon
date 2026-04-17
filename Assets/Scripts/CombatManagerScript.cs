@@ -18,14 +18,14 @@ public class CombatManagerScript : MonoBehaviour
     AudioManagerScript audioManager;
     PlayerDataHandler playerData;
     EnemyTemplate currentEnemy;
-    float enemyHealth, enemyStr, enemyDex, enemyMagic, enemyDodgeChance, enemyCritChance, enemyDamageReduction;
+    float enemyHealth, enemyStr, enemyDex, enemyMagic, enemyDodgeChance, enemyCritChance, enemyDamageReduction, enemyMagicResistance;
     string enemyFightingStyle, combatLogOutput, enemyName;
     int turnCounter, combatRewardGold, combatRewardCrystals;
     bool enemyDefending,enemyDodging, allowPlayerInput, playerDodging, playerDefending, playerFleeing, enemyIsBoss;
     List<float> playerStats;
 
-    List<EnemyTemplate> act1Enemies = new List<EnemyTemplate>();
-    List<EnemyTemplate> act1BossEnemies = new List<EnemyTemplate>();
+    List<EnemyTemplate> act1Enemies = new List<EnemyTemplate>(), act2Enemies = new List<EnemyTemplate>(), act3Enemies = new List<EnemyTemplate>();
+    List<EnemyTemplate> act1BossEnemies = new List<EnemyTemplate>(), act2BossEnemies = new List<EnemyTemplate>(), act3BossEnemies = new List<EnemyTemplate>();
 
     void Start()
     {
@@ -34,6 +34,10 @@ public class CombatManagerScript : MonoBehaviour
         optionPanel = GameObject.Find("CombatOptionPanel");
         act1Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Normal"));
         act1BossEnemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act1/Boss"));
+        act2Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act2/Normal"));
+        act2BossEnemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act2/Boss"));
+        act3Enemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act3/Normal"));
+        act3BossEnemies.AddRange(Resources.LoadAll<EnemyTemplate>("Enemies/Act3/Boss"));
         player = GameObject.FindGameObjectWithTag("Player");
         playerData = player.GetComponent<PlayerDataHandler>();
         playerStats = playerData.GetStats();
@@ -56,6 +60,7 @@ public class CombatManagerScript : MonoBehaviour
         catch
         {
             Debug.LogWarning("Enemy icon not found for " + enemyName);
+            enemyIconObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Background");
         }
         turnCounter = 0;
         combatLogOutput = "A wild " + enemyName + " appears!";
@@ -94,7 +99,14 @@ public class CombatManagerScript : MonoBehaviour
         }
         PrintCombatLogLine();
         DisableCombatUI();
-        progressionPanel.GetComponent<ProgressionManagerScript>().NewExplore();
+        if (enemyIsBoss && playerStats[12] == 3)
+        {
+            progressionPanel.GetComponent<ProgressionManagerScript>().RunVictory();
+        }
+        else
+        {
+            progressionPanel.GetComponent<ProgressionManagerScript>().NewExplore();
+        }
     }
 
     void PlayerTurn()
@@ -120,7 +132,6 @@ public class CombatManagerScript : MonoBehaviour
         UpdateHealthBars();
         turnCounter++;
         int enemyDecision = 1;
-        bool crit = false;
         enemyDefending = false;
         enemyDodging = false;
         combatLogOutput = "\n\nTurn " + turnCounter + ": ";
@@ -128,15 +139,7 @@ public class CombatManagerScript : MonoBehaviour
         {
             enemyDecision = Random.Range(0, 2);
             if (enemyDecision == 0)            {
-                crit = EnemyStrAttack();
-                if (crit)
-                {
-                    //TODO - play crit sfx
-                }
-                else
-                {
-                    //TODO - play normal attack sfx
-                }
+                EnemyStrAttack();
             }
             else
             {
@@ -152,15 +155,7 @@ public class CombatManagerScript : MonoBehaviour
             }
             else if (enemyDecision > 4 && enemyDecision <= 7)
             {
-                crit = EnemyStrAttack();
-                if (crit)
-                {
-                    //TODO - play crit sfx
-                }
-                else
-                {
-                    //TODO - play normal attack sfx
-                }
+                EnemyStrAttack();
             }
             else
             {
@@ -180,15 +175,7 @@ public class CombatManagerScript : MonoBehaviour
             }
             else
             {
-                crit = EnemyStrAttack();
-                if (crit)
-                {
-                    //TODO - play crit sfx
-                }
-                else
-                {
-                    //TODO - play normal attack sfx
-                }
+                EnemyStrAttack();
             }
         }
         else if (enemyFightingStyle == "Confidant")
@@ -204,15 +191,67 @@ public class CombatManagerScript : MonoBehaviour
             }
             else
             {
-                crit = EnemyStrAttack();
-                if (crit)
-                {
-                    //TODO - play crit sfx
-                }
-                else
-                {
-                    //TODO - play normal attack sfx
-                }
+                EnemyStrAttack();
+            }
+        }
+        else if (enemyFightingStyle == "MagicAggressive")
+        {
+            enemyDecision = Random.Range(0, 10);
+            if (enemyDecision <= 5)
+            {
+                EnemyMagAttack();
+            }
+            else
+            {
+                EnemyDefend();
+            }
+        }
+        else if (enemyFightingStyle == "MagicDefensive")
+        {
+            enemyDecision = Random.Range(0, 10);
+            if (enemyDecision <= 3)
+            {
+                EnemyMagAttack();
+            }
+            else
+            {
+                EnemyDefend();
+            }
+        }
+         else if (enemyFightingStyle == "Wild")
+        {
+            enemyDecision = Random.Range(0, 10);
+            if (enemyDecision <= 3)
+            {
+                EnemyMagAttack();
+            }
+            else if (enemyDecision > 3 && enemyDecision <= 6)
+            {
+                EnemyStrAttack();
+            }
+            else if (enemyDecision > 6 && enemyDecision <= 8)
+            {
+                EnemyDefend();
+            }
+            else
+            {
+                EnemyDodge();
+            }
+        }
+        else if (enemyFightingStyle == "MagicCowardly")
+        {
+            enemyDecision = Random.Range(0, 10);
+            if (enemyDecision <= 5)
+            {
+                EnemyDodge();
+            }
+            else if (enemyDecision > 5 && enemyDecision <= 7)
+            {
+                EnemyDefend();
+            }
+            else
+            {
+                EnemyMagAttack();
             }
         }
 
@@ -225,7 +264,7 @@ public class CombatManagerScript : MonoBehaviour
         combatLogText.text += combatLogOutput;
     }
 
-    bool EnemyStrAttack()
+    void EnemyStrAttack()
     {
         int damage = (int)enemyStr;
         int critCheck = Random.Range(0, 100);
@@ -252,7 +291,6 @@ public class CombatManagerScript : MonoBehaviour
         playerData.FlatDamage(damage);
         combatLogOutput += enemyName + " dealt " + damage + " damage. ";
         UpdateHealthBars();
-        return true;
     }
 
     void EnemyMagAttack()
@@ -347,7 +385,16 @@ public class CombatManagerScript : MonoBehaviour
             {
                 playerData.AddStat(5, -5);
                 int damage = (int)playerStats[2];
-                combatLogOutput += "You strike " + enemyName + " for " + damage + " magic damage, ignoring their defenses. ";
+                
+                if (enemyMagicResistance > 0)
+                {
+                    damage = (int)(damage - (enemyMagicResistance));
+                    combatLogOutput += "You strike " + enemyName + " for " + damage + " magic damage, but they resisted some of it. ";
+                }
+                else
+                {
+                    combatLogOutput += "You strike " + enemyName + " for " + damage + " magic damage, ignoring their defenses. ";
+                }
                 if (enemyDodging)
                 {
                     int dodgeCheck = Random.Range(0, 100);
@@ -412,7 +459,7 @@ public class CombatManagerScript : MonoBehaviour
 
     public void PlayerFlee()
     {
-        if (allowPlayerInput == true)
+        if (allowPlayerInput == true && enemyIsBoss == false)
         {
             audioManager.PlaySFXClick();
             playerFleeing = true;
@@ -421,6 +468,13 @@ public class CombatManagerScript : MonoBehaviour
             PrintCombatLogLine();
             EndCombat();
         }
+        else if (allowPlayerInput == true && enemyIsBoss == true)
+        {
+            audioManager.PlaySFXClick();
+            combatLogOutput += "You cannot flee from a boss fight! ";
+            PrintCombatLogLine();
+            EnemyTurn();
+        }
     }
 
 
@@ -428,7 +482,7 @@ public class CombatManagerScript : MonoBehaviour
     public void UpdatePlayerStats()
     {
         playerStats = playerData.GetStats();
-        playerStatsText.text = "Str: " + playerStats[0] + "\nDex: " + playerStats[1] + "\nMagic: " + playerStats[2] + "\nHealth: " + playerStats[3] + "/" + playerStats[4] + "\nEnergy: " + playerStats[5] + "/" + playerStats[6] + "\nDamage Reduction: " + playerStats[7] + "%\nDodge Chance: " + playerStats[8] + "%\nCrit Chance: " + playerStats[9] + "%\nGold: " + playerStats[10];
+        playerStatsText.text = "Str: " + playerStats[0] + "\nDex: " + playerStats[1] + "\nMagic: " + playerStats[2] + "\nHealth: " + playerStats[3] + "/" + playerStats[4] + "\nEnergy: " + playerStats[5] + "/" + playerStats[6] + "\nDamage Reduction: " + playerStats[7] + "\nDodge Chance: " + playerStats[8] + "%\nCrit Chance: " + playerStats[9] + "%\nGold: " + playerStats[10];
     }
 
     public void UpdateHealthBars()
@@ -441,7 +495,7 @@ public class CombatManagerScript : MonoBehaviour
 
     public void UpdateEnemyStats()
     {
-        enemyStatsText.text = "Str: " + enemyStr + "\nDex: " + enemyDex + "\nMagic: " + enemyMagic + "\nHealth: " + enemyHealth + "/" + currentEnemy.enemyMaxHealth + "\nDodge Chance: " + enemyDodgeChance + "%\nCrit Chance: " + enemyCritChance + "%\nDamage Reduction: " + enemyDamageReduction;
+        enemyStatsText.text = "Str: " + enemyStr + "\nDex: " + enemyDex + "\nMagic: " + enemyMagic + "\nHealth: " + enemyHealth + "/" + currentEnemy.enemyMaxHealth + "\nDodge Chance: " + enemyDodgeChance + "%\nCrit Chance: " + enemyCritChance + "%\nDamage Reduction: " + enemyDamageReduction + "\nMagic Resistance: " + enemyMagicResistance;
     }
 
 
@@ -462,6 +516,7 @@ public class CombatManagerScript : MonoBehaviour
                 enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
                 enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
                 break;
             case -1: // Act 1 Boss
                 currentEnemy = act1BossEnemies[Random.Range(0, act1BossEnemies.Count)];
@@ -474,12 +529,59 @@ public class CombatManagerScript : MonoBehaviour
                 enemyDamageReduction = currentEnemy.enemyDamageReduction;
                 enemyFightingStyle = currentEnemy.fightingStyle.ToString();
                 enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
                 break;
             case 2:
-                //generate act 2 enemy
+                currentEnemy = act2Enemies[Random.Range(0, act2Enemies.Count)];
+                enemyHealth = currentEnemy.enemyMaxHealth;
+                enemyStr = currentEnemy.enemyStr;
+                enemyDex = currentEnemy.enemyDex;
+                enemyMagic = currentEnemy.enemyMagic;
+                enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
+                enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
+                break;
+            case -2: // Act 2 Boss
+                currentEnemy = act2BossEnemies[Random.Range(0, act2BossEnemies.Count)];
+                enemyHealth = currentEnemy.enemyMaxHealth;
+                enemyStr = currentEnemy.enemyStr;
+                enemyDex = currentEnemy.enemyDex;
+                enemyMagic = currentEnemy.enemyMagic;
+                enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
+                enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
                 break;
             case 3:
-                //generate act 3 enemy
+                currentEnemy = act3Enemies[Random.Range(0, act3Enemies.Count)];
+                enemyHealth = currentEnemy.enemyMaxHealth;
+                enemyStr = currentEnemy.enemyStr;
+                enemyDex = currentEnemy.enemyDex;
+                enemyMagic = currentEnemy.enemyMagic;
+                enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
+                enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
+                break;
+            case -3: // Act 3 Boss
+                currentEnemy = act3BossEnemies[Random.Range(0, act3BossEnemies.Count)];
+                enemyHealth = currentEnemy.enemyMaxHealth;
+                enemyStr = currentEnemy.enemyStr;
+                enemyDex = currentEnemy.enemyDex;
+                enemyMagic = currentEnemy.enemyMagic;
+                enemyDodgeChance = currentEnemy.enemyDodgeChance;
+                enemyCritChance = currentEnemy.enemyCritChance;
+                enemyDamageReduction = currentEnemy.enemyDamageReduction;
+                enemyFightingStyle = currentEnemy.fightingStyle.ToString();
+                enemyIsBoss = currentEnemy.isBoss;
+                enemyMagicResistance = currentEnemy.magicResistance;
                 break;
         }
     }

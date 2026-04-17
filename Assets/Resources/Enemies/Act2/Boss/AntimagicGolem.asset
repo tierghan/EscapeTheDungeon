@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eed176d184d02f4ab41f776942508b9, type: 3}
-  m_Name: Troll
+  m_Name: AntimagicGolem
   m_EditorClassIdentifier: 
-  enemyName: Troll [Boss]
-  enemyMaxHealth: 125
-  enemyStr: 20
-  enemyDex: 20
-  enemyMagic: 20
+  enemyName: Antimagic Golem [Boss]
+  enemyMaxHealth: 300
+  enemyStr: 30
+  enemyDex: 1
+  enemyMagic: 1
   enemyDamageReduction: 10
-  enemyDodgeChance: 5
-  enemyCritChance: 5
-  goldReward: 150
-  actID: 1
-  magicResistance: 0
+  enemyDodgeChance: 0
+  enemyCritChance: 20
+  goldReward: 500
+  actID: 2
+  magicResistance: 35
   fightingStyle: 0
   isBoss: 1

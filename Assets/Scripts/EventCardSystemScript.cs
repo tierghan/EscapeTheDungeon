@@ -166,10 +166,10 @@ public class EventCardSystemScript : MonoBehaviour
             // Event 0: Mystery Potion - Drink the potion
             case 0:
                 player.GetComponent<PlayerDataHandler>().FlatDamage(5);
-                int randomStatType = Random.Range(0, 2);
+                int randomStatType = Random.Range(0, 5);
                 int randomStat = 0;
                 string statName = "";
-                if(randomStatType == 0)
+                if(randomStatType <= 3)
                 {
                     // Adds 1 to STR, DEX, or MAG.
                     randomStat = Random.Range(0,4);
@@ -193,18 +193,12 @@ public class EventCardSystemScript : MonoBehaviour
                 else
                 {
                     // Adds 1 to max DR, DC, CC.
-                    randomStat = Random.Range(7,10);
+                    randomStat = 7;
                     player.GetComponent<PlayerDataHandler>().AddStat(randomStat, 1f );
                     switch (randomStat)
                     {
                         case 7:
                             statName = "Damage Reduction";
-                            break;
-                        case 8:
-                            statName = "Dodge Chance";
-                            break;
-                        case 9:
-                            statName = "Crit Chance";
                             break;
                         default:
                             statName = "Unknown";
@@ -232,7 +226,7 @@ public class EventCardSystemScript : MonoBehaviour
                 {
                     player.GetComponent<PlayerDataHandler>().PercentageDamage(25);
                     player.GetComponent<PlayerDataHandler>().AddStat(10, 30);
-                    descriptionText.text = "You get closer, opening the chest only to find rows of teeth lurhcing towards your face. Suprised, you take decent damage before you can make an escape from the sudden attack. \n\n--25% HP";
+                    descriptionText.text = "You get closer, opening the chest only to find rows of teeth lurhcing towards your face. Suprised, you take decent damage before you can make an escape from the sudden attack. \n\n-25% HP";
                 }
                 else
                 {
@@ -257,7 +251,7 @@ public class EventCardSystemScript : MonoBehaviour
                     }
                     else if (randomStat == 4)
                     {
-                        player.GetComponent<PlayerDataHandler>().AddStat(5, 5f);
+                        player.GetComponent<PlayerDataHandler>().AddStat(6, 5f);
                     }
                     else if (randomStat == 5)
                     {

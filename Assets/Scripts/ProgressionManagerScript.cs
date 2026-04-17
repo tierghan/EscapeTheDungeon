@@ -13,17 +13,18 @@ public class ProgressionManagerScript : MonoBehaviour
     GameObject act1BossEvent, act2BossEvent, act3BossEvent, combatManager, eventManager, ProgressionPanel, gameOverWindow, shopManager, restManager, detourManager, trainingManager;
 
     [SerializeField]
-    GameObject combat1, combat2, combat3, event1, event2, event3, train1, train2, train3, rest1, rest2, rest3, shop1, shop2, shop3, detour1, detour2, detour3;
+    GameObject combat1, combat2, combat3, event1, event2, event3, train1, train2, train3, rest1, rest2, rest3, shop1, shop2, shop3, detour1, detour2, detour3, victoryWindow;
 
     GameObject player, bossEvent;
     [SerializeField]
-    TMP_Text actProgressText;
+    TMP_Text actProgressText, victoryText;
 
     [SerializeField]
     AudioManagerScript audioManager;
 
     void Start()
     {
+        victoryWindow.SetActive(false);
         player = GameObject.FindGameObjectWithTag("Player");
         FetchActFromPlayerData();
         generalEvents = new List<GameObject>(GameObject.FindGameObjectsWithTag("progression choice"));
@@ -50,6 +51,13 @@ public class ProgressionManagerScript : MonoBehaviour
         eventManager.GetComponent<EventCardSystemScript>().HideEventWindow();
         gameOverWindow.SetActive(false);
         NewExplore();
+    }
+
+    public void RunVictory()
+    {
+        player.GetComponent<PlayerDataHandler>().AddStat(13, 100);
+        victoryText.text = "You have defeated the final boss of Act " + currentAct + " and escaped the dungeon!\nCongratulations on your victory!\n\nHere is some extra crystals for your efforts.\n(+100 Crystals)\n\nYou currently have " + player.GetComponent<PlayerDataHandler>().GetStats()[13] + " crystals.";
+        victoryWindow.SetActive(true);
     }
 
     public void NewExplore()

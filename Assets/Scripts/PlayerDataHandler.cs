@@ -115,8 +115,8 @@ public class PlayerDataHandler : MonoBehaviour, IDataPersistance
 
     private void FixedUpdate() 
     {   
-        playerDodgeChance = Mathf.Clamp((int)playerDex, 0, 100);
-        playerCritChance = Mathf.Clamp((int)playerDex, 0, 100);
+        playerDodgeChance = Mathf.Clamp((int)(playerDex*0.5f+playerDex), 0, 50);
+        playerCritChance = Mathf.Clamp((int)(playerDex*0.5f+playerDex), 0, 50);
         #if UNITY_WEBGL && !UNITY_EDITOR
         autoSaveTimer += Time.fixedDeltaTime;
         if (autoSaveTimer >= 5f) // Save every 5 seconds
