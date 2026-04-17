@@ -188,6 +188,7 @@ public class ProgressionManagerScript : MonoBehaviour
     }
     public void GenerateBossEvent()
     {
+        currentAct = player.GetComponent<PlayerDataHandler>().GetStats()[12];
         Debug.Log("Generating Boss Event | Current Act: " + currentAct);
         switch (currentAct)
         {
