@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eed176d184d02f4ab41f776942508b9, type: 3}
   m_Name: ForbodingReptile
   m_EditorClassIdentifier: 
-  enemyName: ForbodingReptile
+  enemyName: Forboding Reptile
   enemyMaxHealth: 100
   enemyStr: 10
   enemyDex: 35

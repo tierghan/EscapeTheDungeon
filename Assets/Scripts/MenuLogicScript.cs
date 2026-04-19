@@ -32,7 +32,15 @@ public class MenuLogicScript : MonoBehaviour
 
     void Start()
     {
-        CloseNewGameConfirmation();
-        CloseCreditsWindow();
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            CloseNewGameConfirmation();
+            CloseCreditsWindow();
+        }
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

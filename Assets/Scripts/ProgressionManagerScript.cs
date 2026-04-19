@@ -56,8 +56,13 @@ public class ProgressionManagerScript : MonoBehaviour
     public void RunVictory()
     {
         player.GetComponent<PlayerDataHandler>().AddStat(13, 100);
-        victoryText.text = "You have defeated the final boss of Act " + currentAct + " and escaped the dungeon!\nCongratulations on your victory!\n\nHere is some extra crystals for your efforts.\n(+100 Crystals)\n\nYou currently have " + player.GetComponent<PlayerDataHandler>().GetStats()[13] + " crystals.";
+        victoryText.text = "You have defeated the final boss of Act 3 and escaped the dungeon!\nCongratulations on your victory!\n\nHere is some extra crystals for your efforts.\n(+100 Crystals)\n\nYou currently have " + player.GetComponent<PlayerDataHandler>().GetStats()[13] + " crystals.";
         victoryWindow.SetActive(true);
+    }
+
+    public void HideVictory()
+    {
+        victoryWindow.SetActive(false);
     }
 
     public void NewExplore()
@@ -188,7 +193,7 @@ public class ProgressionManagerScript : MonoBehaviour
     }
     public void GenerateBossEvent()
     {
-        currentAct = player.GetComponent<PlayerDataHandler>().GetStats()[12];
+        currentAct = (int)player.GetComponent<PlayerDataHandler>().GetStats()[12];
         Debug.Log("Generating Boss Event | Current Act: " + currentAct);
         switch (currentAct)
         {
