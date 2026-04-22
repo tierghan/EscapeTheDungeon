@@ -11,7 +11,10 @@ public class EventCardSystemScript : MonoBehaviour
     GameObject eventPanel,continueButton;
     [SerializeField]
     AudioManagerScript audioManager;
+    [SerializeField]
     GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, titleObject, descriptionObject;
+    [SerializeField]
+    PlayerDataHandler playerScript;
     int randomStat;
     List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
     
@@ -23,6 +26,11 @@ public class EventCardSystemScript : MonoBehaviour
         1 | Adventurer Donation - An adventurer that offers to heal the player for a price. Player can also choose to rob him or ignore him.
         2 | Mimic Event - A chest that may or may not be a mimic. Player can choose to open it or destroy it.
         3 | Abandoned Camp - A small camp with some supplies. Player can choose to search it for useful items, rest at the camp to heal, or ignore it and continue on their way.
+        4 | Slot Machine - Player finds a slot machine where they can gamble coins for crystals.
+        5 | Split Paths - Player finds a split path, where one way has gold and the other is a large detour [TODO]
+        6 | Mysterious Wizard - Player encounters a wizard who offer to make them stronger. [TODO]
+        7 | Potion Seller - A merchant the player encounters who offers to sell them cheaper potions than what the shop can provide. [TODO]
+        8 | Glowing Rock - a rock that can be made into a potion that increase hp and energy or sold for gold. [TODO]
     */
     int eventSelector;
 
@@ -30,17 +38,7 @@ public class EventCardSystemScript : MonoBehaviour
 
     void Start()
     {
-        titleObject = GameObject.Find("EventTitleText");
-        descriptionObject = GameObject.Find("EventDescriptionText");
-
-        optionButton1 = GameObject.Find("EventButtonOption1");
-        optionButton2 = GameObject.Find("EventButtonOption2");
-        optionButton3 = GameObject.Find("EventButtonOption3");
-        optionButton4 = GameObject.Find("EventButtonOption4");
-
-        player = GameObject.FindGameObjectWithTag("Player");
         List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
-
         HideEventWindow();
     }
 
@@ -84,6 +82,9 @@ public class EventCardSystemScript : MonoBehaviour
                 break;
             case 3:
                 AbandonedCampEvent();
+                break;
+            case 4:
+                GoldGamblerEvent();
                 break;
             default:
                 Debug.Log("No event selected." + eventSelector);
@@ -159,6 +160,21 @@ public class EventCardSystemScript : MonoBehaviour
         optionButton3.SetActive(true);
         optionButton4.SetActive(false);
     }
+
+    void GoldGambler()
+    {
+        titleText.text = "A Wild Slot Machine Appears!";
+        descriptionText.text = "You round a corner and find a strange slot machine accepting gold coins. A nearby sign suggests that you can gamble your money here for rewards.";
+        option1Text.text = "Insert 20 gold.";
+        option2Text.text = "Insert half your gold.";
+        option3Text.text = "Insert all your gold.";
+        option4Text.text = "Gambling is bad, better to leave it alone.";
+        optionButton1.SetActive(true);
+        optionButton2.SetActive(true);
+        optionButton3.SetActive(true);
+        optionButton4.SetActive(true);
+    }
+
     public void Option1Selected()
     {
         switch (eventSelector)
@@ -268,7 +284,26 @@ public class EventCardSystemScript : MonoBehaviour
                 player.GetComponent<PlayerDataHandler>().AddStat(10, 30);
                 hideOptions();
                 break;
+            
+            // Event 4: Slot Machine - Insert 20 Gold.
+            case 4:
+                if (playerScript.GetGold() >= 20)
+                {
+                    playerScript.AddStat(10,-20);
+                    int randomNumber = Random.Range(0,2);
+                    if (randomNumber == 0)
+                    {
+                        descriptionText.text = "You input your coins and pull the lever. Unfortunatly the slots do not go in your favor and you lose what you bet to the machine. Better luck next time I suppose.\n\n -20 Gold";
+                        hideOptions();
+                    }
+                    else
+                    {
+                        descriptionText.text = "Your bet pays off! A clink sound is heard in the tray on the bottom on the machine, and inside is a crystal!\n\n-20 Gold\n+1 Crystal";
+                        playerScript.AddStat(13, 1);
+                    }
 
+                }
+                break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
@@ -317,6 +352,30 @@ public class EventCardSystemScript : MonoBehaviour
                 hideOptions();
                 break;
 
+            //Event 4: Slot Machine - Insert half your gold.
+            case 4:
+                if (playerScript.GetGold >1)
+                {
+                    int betGold = (int)(Math.Round((playerScript.GetGold/2),0));
+                    playerScript.AddStat(10,betGold*-1);
+                    int randomNumber = Random.Range(0,2);
+                    if (randomNumber == 0)
+                    {
+                        descriptionText.text = "You insert " + betGold + " gold into the machine, immediatly losing the money spent as the slots roll onto skulls. Better luck next time I suppose.\n\n-" + betGold +" Gold";
+                        hideOptions();
+                    }
+                    else
+                    {
+                        float gainedCrystals = (Math.Round((betGold/20),1));
+                        descriptionText.text = "You insert " + betGold + " gold into the machine. The slot spin and land on three symbols of a crystal. It looks like you won!\n\n-"+betGold+" gold\n+"+gainedCrystals+" Crystals";
+                        hideOptions();
+                    }
+                }
+                else if (playerScript.GetGold == 1)
+                {
+                    Option3Selected();
+                }
+                break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
@@ -340,7 +399,27 @@ public class EventCardSystemScript : MonoBehaviour
                 descriptionText.text = "You decide to ignore the camp and continue on your way.";
                 hideOptions();
                 break;
-                
+            
+            // Event 4: Slot Machine - Insert all your gold.
+            case 4:
+                if (playerScript.GetGold()>0)
+                {
+                    int betGold = (int)(Math.Round((playerScript.GetGold),0));
+                    playerScript.AddStat(10,betGold*-1);
+                    int randomNumber = Random.Range(0,2);
+                    if (randomNumber == 0)
+                    {
+                        descriptionText.text = "You insert " + betGold + " gold into the machine, immediatly losing the money spent as the slots roll onto skulls. Better luck next time I suppose.\n\n-" + betGold +" Gold";
+                        hideOptions();
+                    }
+                    else
+                    {
+                        float gainedCrystals = (Math.Round((betGold/20),1));
+                        descriptionText.text = "You insert " + betGold + " gold into the machine. The slot spin and land on three symbols of a crystal. It looks like you won!\n\n-"+betGold+" gold\n+"+gainedCrystals+" Crystals";
+                        hideOptions();
+                    }
+                }
+                break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
@@ -354,12 +433,23 @@ public class EventCardSystemScript : MonoBehaviour
         switch (eventSelector)
         {
 
-            // Adventurer Donation - Ignore the adventurer and continue on your way.
+            // Event 0: Mystery Potion - Ignore the potion and continue on your way.
+            case 0:
+                descriptionText.text = "You decide to ignore the stange potion and move on.";
+                hideOptions();
+                break;
+            // Event 1: Adventurer Donation - Ignore the adventurer and continue on your way.
             case 1:
                 descriptionText.text = "You decide to ignore the adventurer and continue on your way.";
                 hideOptions();
                 break;
-                
+            
+            // Event 4: Slot Machine - Gambling is bad, better to leave it alone.
+            case 4:
+                descriptionText.text = "Better to keep your money in the case you will need it, then throw it to the wind on a gamble.";
+                hideOptions();
+                break;
+
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;
