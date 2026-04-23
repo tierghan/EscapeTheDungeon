@@ -15,12 +15,14 @@ public class EventCardSystemScript : MonoBehaviour
     GameObject optionButton1, optionButton2, optionButton3, optionButton4, player, titleObject, descriptionObject;
     [SerializeField]
     PlayerDataHandler playerScript;
+    [SerializeField]
+    ProgressionManagerScript progressionScript;
     int randomStat;
     List<string> stats = new List<string>(){"STR", "DEX", "MAG", "Max HP", "Max Energy", "Damage Reduction"};
     
 
 
-    int eventCount = 4;
+    int eventCount = 9;
     /*
         0 | Mystery Potion - A potion that has a random effect on the player. Could be good or bad.
         1 | Adventurer Donation - An adventurer that offers to heal the player for a price. Player can also choose to rob him or ignore him.
@@ -85,6 +87,18 @@ public class EventCardSystemScript : MonoBehaviour
                 break;
             case 4:
                 GoldGamblerEvent();
+                break;
+            case 5:
+                SplitPathsEvent();
+                break;
+            case 6:
+                WizardEvent();
+                break;
+            case 7:
+                PotionSellerEvent();
+                break;
+            case 8:
+                GlowingRockEvent();
                 break;
             default:
                 Debug.Log("No event selected." + eventSelector);
@@ -161,7 +175,7 @@ public class EventCardSystemScript : MonoBehaviour
         optionButton4.SetActive(false);
     }
 
-    void GoldGambler()
+    void GoldGamblerEvent()
     {
         titleText.text = "A Wild Slot Machine Appears!";
         descriptionText.text = "You round a corner and find a strange slot machine accepting gold coins. A nearby sign suggests that you can gamble your money here for rewards.";
@@ -173,6 +187,59 @@ public class EventCardSystemScript : MonoBehaviour
         optionButton2.SetActive(true);
         optionButton3.SetActive(true);
         optionButton4.SetActive(true);
+    }
+
+    void SplitPathsEvent()
+    {
+        titleText.text = "A fork in the road";
+        descriptionText.text = "Ahead is a split in the road. You can choose to go down the left path or the right path, one is likly to take you further away from your goal and the other may lead you to riches, or so your intuition says.";
+        option1Text.text = "Go left.";
+        option2Text.text = "Go right.";
+        optionButton1.SetActive(true);
+        optionButton2.SetActive(true);
+        optionButton3.SetActive(false);
+        optionButton4.SetActive(false);
+    }
+
+    void WizardEvent()
+    {
+        titleText.text = "A stange Wizard appears";
+        descriptionText.text = "You bump into a old wizard who lives in the dungeon. He greets you, and offers to lend you some of his magic to increase your power.";
+        option1Text.text = "Ask for Max HP";
+        option2Text.text = "Ask for Max Energy";
+        option3Text.text = "Ask for DR";
+        option4Text.text = "Refuse the offer, he is suspicious.";
+        optionButton1.SetActive(true);
+        optionButton2.SetActive(true);
+        optionButton3.SetActive(true);
+        optionButton4.SetActive(true);
+    }
+
+    void PotionSellerEvent()
+    {
+        titleText.text = "Potion Seller";
+        descriptionText.text = "Someone calls out to you from behind, a shady looking man in a dark cloak. He waves you closer, explaining that he is a potion seller who sells potions cheaper than the dungeon shops will sell them for.";
+        option1Text.text = "Buy 2 Potions (30 Gold)";
+        option2Text.text = "Buy 6 Potions (90 Gold)";
+        option3Text.text = "Give me your strongest potions.";
+        option4Text.text = "Refuse the offer, he is suspicious.";
+        optionButton1.SetActive(true);
+        optionButton2.SetActive(true);
+        optionButton3.SetActive(true);
+        optionButton4.SetActive(true);
+    }
+
+    void GlowingRockEvent()
+    {
+        titleText.text = "Glowing Rock";
+        descriptionText.text = "You find a stange glowing rock on the ground. Looking at it, you could probably sell it for a decent amount of cash. On the other, you could add it into a potion and drink it to see what happens...";
+        option1Text.text = "Sell the rock.";
+        option2Text.text = "Drink the rock.";
+        option3Text.text = "Leave the rock alone.";
+        optionButton1.SetActive(true);
+        optionButton2.SetActive(true);
+        optionButton3.SetActive(true);
+        optionButton4.SetActive(false);
     }
 
     public void Option1Selected()
@@ -300,9 +367,42 @@ public class EventCardSystemScript : MonoBehaviour
                     {
                         descriptionText.text = "Your bet pays off! A clink sound is heard in the tray on the bottom on the machine, and inside is a crystal!\n\n-20 Gold\n+1 Crystal";
                         playerScript.AddStat(13, 1);
+                        hideOptions();
                     }
 
                 }
+                break;
+            
+            // Event 5: Split Paths - Go left.
+            case 5:
+                descriptionText.text = "You decide to go left, finding the path loops backwards for quite a while.\n\n-4 Act progress";
+                progressionScript.ModifyActProgression(-4);
+                hideOptions();
+                break;
+            
+            //Event 6: Wizard Event - Ask for Max HP.
+            case 6: 
+                descriptionText.text = "The wizard nods his head, and mutters a few words before blasting you with some magic. You feel a bit healthier now!\n\n+15 Max HP";
+                playerScript.AddStat(4,15);
+                hideOptions();
+                break;
+            
+            // Event 7: Potion Seller - Buy 2 Potions (30 Gold)
+            case 7:
+                if (playerScript.GetGold() >= 20)
+                {
+                    descriptionText.text = "You buy some cheap potions off of the man. They look like normal potions so you add them to your stash.\n\n-20 Gold\n+2 Potions";
+                    playerScript.AddStat(10,-20);
+                    playerScript.AddStat(11,2);
+                    hideOptions();
+                }
+                break;
+            
+            // Event 8: Glowing Rock - Sell the rock.
+            case 8:
+                descriptionText.text = "You decide to sell the rock. Later on you sell the rock to another wandering adventurer for 200 Gold.\n\n+200 Gold";
+                playerScript.AddStat(10,200);
+                hideOptions();
                 break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
@@ -354,9 +454,9 @@ public class EventCardSystemScript : MonoBehaviour
 
             //Event 4: Slot Machine - Insert half your gold.
             case 4:
-                if (playerScript.GetGold >1)
+                if (playerScript.GetGold() >1)
                 {
-                    int betGold = (int)(Math.Round((playerScript.GetGold/2),0));
+                    int betGold = (int)(Mathf.Round((playerScript.GetGold()/2)));
                     playerScript.AddStat(10,betGold*-1);
                     int randomNumber = Random.Range(0,2);
                     if (randomNumber == 0)
@@ -366,15 +466,48 @@ public class EventCardSystemScript : MonoBehaviour
                     }
                     else
                     {
-                        float gainedCrystals = (Math.Round((betGold/20),1));
+                        float gainedCrystals = (Mathf.Round((betGold/20)));
                         descriptionText.text = "You insert " + betGold + " gold into the machine. The slot spin and land on three symbols of a crystal. It looks like you won!\n\n-"+betGold+" gold\n+"+gainedCrystals+" Crystals";
                         hideOptions();
                     }
                 }
-                else if (playerScript.GetGold == 1)
+                else if (playerScript.GetGold() == 1)
                 {
                     Option3Selected();
                 }
+                break;
+            
+            // Event 5: Split Paths - Go right.
+            case 5:
+                descriptionText.text = "You decide to go right, finding a small trasure room to the side of the path ahead.\n\n+200 Gold";
+                playerScript.AddStat(10,200);
+                hideOptions();
+                break;
+            
+            // Event 6: Wizard Event - Ask for Max Energy.
+            case 6:
+                descriptionText.text = "The wizard nods his head. He makes some strange hand symbols then places a hand on your head. you suddenly feel a bit more energestic than before!\n\n+10 Max Energy";
+                playerScript.AddStat(6,10);
+                hideOptions();
+                break;
+            
+            // Event 7: Potion Seller - Buy 6 Potions (90 Gold)
+            case 7:
+                if (playerScript.GetGold() >=90)
+                {
+                    descriptionText.text = "You buy several potions from the seller, making sure to take full advantage of the discount.\n\n-90 Gold\n+6 Potions";
+                    playerScript.AddStat(10,-90);
+                    playerScript.AddStat(11,6);
+                    hideOptions();
+                }
+                break;
+            
+            // Event 8: Glowing Rock - Drink the Rock
+            case 8: 
+                descriptionText.text = "You decide to grind the rock up and add it to a potion, drinking the mixture. After a bit you feel healthier and more energized!\n\n+10 Max HP\n+10 Max Energy";
+                playerScript.AddStat(4,10);
+                playerScript.AddStat(6,10);
+                hideOptions();
                 break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
@@ -404,7 +537,7 @@ public class EventCardSystemScript : MonoBehaviour
             case 4:
                 if (playerScript.GetGold()>0)
                 {
-                    int betGold = (int)(Math.Round((playerScript.GetGold),0));
+                    int betGold = (int)(Mathf.Round((playerScript.GetGold())));
                     playerScript.AddStat(10,betGold*-1);
                     int randomNumber = Random.Range(0,2);
                     if (randomNumber == 0)
@@ -414,11 +547,29 @@ public class EventCardSystemScript : MonoBehaviour
                     }
                     else
                     {
-                        float gainedCrystals = (Math.Round((betGold/20),1));
+                        float gainedCrystals = (Mathf.Round((betGold/20)));
                         descriptionText.text = "You insert " + betGold + " gold into the machine. The slot spin and land on three symbols of a crystal. It looks like you won!\n\n-"+betGold+" gold\n+"+gainedCrystals+" Crystals";
                         hideOptions();
                     }
                 }
+                break;
+            // Event 6: Wizard Event - Ask for more DR.
+            case 6:
+                descriptionText.text = "The wizard nods, grabbing his staff from the nearby wall and infusing it with a glow. Then he whacks it against you, which does not hurt as much as you thing it would.\n\n+3 DR";
+                playerScript.AddStat(7,3);
+                hideOptions();
+                break;
+            
+            // Event 7: Potion Seller - Give me your strongest potions.
+            case 7: 
+                descriptionText.text = "The potion seller remarks that you wouldnt be able to handle his strongest potions before hobbleing off, annoyed.";
+                hideOptions();
+                break;
+            
+            // Event 8: Glowing Rock - Leave the rock alone
+            case 8: 
+                descriptionText.text = "You decide to leave the glowing rock alone. Better to no mess with the mystical when given the choice.";
+                hideOptions();
                 break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
@@ -449,7 +600,18 @@ public class EventCardSystemScript : MonoBehaviour
                 descriptionText.text = "Better to keep your money in the case you will need it, then throw it to the wind on a gamble.";
                 hideOptions();
                 break;
-
+            
+            // Event 6: Wizard Event - Refuse the offer, he is suspicious
+            case 6:
+                descriptionText.text = "You refuse the offer and quickly make your way forward. It rarely does well to trust stange old men in deep underground dungeons.";
+                hideOptions();
+                break;
+            
+            // Event 7: Potion Seller - refuse the offer, he is suspicious.
+            case 7:
+                descriptionText.text = "You refuse, quickly moving away from the shady figure. His potions must be cheap for a reason.";
+                hideOptions();
+                break;
             default:
                 Debug.Log("How did you select this?? Current event: " + eventSelector);
                 break;

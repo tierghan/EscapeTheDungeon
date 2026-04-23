@@ -82,6 +82,10 @@ public class ProgressionManagerScript : MonoBehaviour
     public void ModifyActProgression(int amount)
     {
         actProgress += amount;
+        if (actProgress<1)
+        {
+            actProgress = 1;
+        }
     }
 
     public void GenerateGeneralEvents()
